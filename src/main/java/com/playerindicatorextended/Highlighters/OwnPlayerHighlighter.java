@@ -1,64 +1,55 @@
 package com.playerindicatorextended.Highlighters;
 
 import com.playerindicatorextended.PlayerIndicatorExtendedConfig;
+import com.playerindicatorextended.PlayerRender.PlayerRenderProperties;
 import com.playerindicatorextended.enums.HighlighterType;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.client.game.ChatIconManager;
-import net.runelite.client.menus.MenuManager;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
-
+import net.runelite.api.Client;
+import net.runelite.api.Player;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
-@Slf4j
 @Singleton
-public class OwnPlayerHighlighter extends BaseHighlighter {
+@Slf4j
+public class OwnPlayerHighlighter extends BaseHighlighter
+{
+    private final Client client;
+    private final PlayerIndicatorExtendedConfig config;
 
     @Inject
-    public OwnPlayerHighlighter(Client client, PlayerIndicatorExtendedConfig config, ModelOutlineRenderer modelOutlineRenderer, Provider<MenuManager> menuManagerProvider, ChatIconManager chatIconManager) {
-        super(client, config, modelOutlineRenderer, menuManagerProvider, chatIconManager);
+    public OwnPlayerHighlighter(Client client, PlayerIndicatorExtendedConfig config)
+    {
+        this.client = client;
+        this.config = config;
     }
 
     @Override
-    public HighlighterType getType() {
-        return HighlighterType.OWN_PLAYER;
-    }
+    public List<PlayerRenderProperties> getRenderDecisions()
+    {
+        if(!config.highlightOwnPlayer()){
+            return Collections.emptyList();
+        }
 
-    @Override
-    public void renderNormal(Graphics2D g) {
-        if (!config.highlightOwnPlayer())
-            return;
+        Player localPlayer = client.getLocalPlayer();
+        if (localPlayer == null)
+        {
+            return Collections.emptyList();
+        }
 
-        Player ownPlayer = client.getLocalPlayer();
-        if (ownPlayer == null)
-            return;
+        PlayerRenderProperties decision = PlayerRenderProperties.builder()
+                .player(localPlayer)
+                .renderColor(config.highlightOwnPlayerColor())
+                .renderNameLocation(config.ownPlayerPlayerNameLocation())
+                .renderOutline(config.ownPlayerPlayerOutline())
+                .renderMinimap(config.ownPlayerPlayerMinimapAnimation())
+                .renderTile(config.ownPlayerPlayerTile())
+                .renderHull(config.ownPlayerPlayerHull())
+                .priority(HighlighterType.OWN_PLAYER.getPriority())
+                .renderClanChatRank(true)
+                .build();
 
-        Color c = config.highlightOwnPlayerColor();
-
-        renderPlayer(
-            g,
-            ownPlayer,
-            c,
-            config.ownPlayerPlayerOutline(),
-            config.ownPlayerPlayerHull(),
-            config.ownPlayerPlayerTile(),
-            true,
-            ownPlayer.getName() + " (" + ownPlayer.getCombatLevel() + ")",
-            config.ownPlayerPlayerNameLocation(),
-            true,
-            "Local Player",
-            config.ownPlayerPlayerLabelLocation(),false, false
-        );
-    }
-
-    @Override
-    public void renderMinimap(Graphics2D g) {
-        if (!config.highlightOwnPlayer())
-            return;
-
-        renderMinimapDot(g, client.getLocalPlayer(), config.highlightOwnPlayerColor(), config.ownPlayerPlayerMinimapAnimation());
+        return Collections.singletonList(decision);
     }
 }
