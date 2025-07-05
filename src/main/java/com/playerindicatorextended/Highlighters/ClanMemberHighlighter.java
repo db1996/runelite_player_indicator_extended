@@ -54,7 +54,7 @@ public class ClanMemberHighlighter extends BaseHighlighter
             return null;
         }
 
-        if (player == null || player.getName() == null || player.equals(localPlayer)) {
+        if (player == null || player.getName() == null || player.getName().equals(localPlayer.getName())) {
             return null;
         }
 

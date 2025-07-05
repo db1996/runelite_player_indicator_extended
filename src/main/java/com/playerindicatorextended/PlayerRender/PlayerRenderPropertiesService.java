@@ -54,6 +54,9 @@ public class PlayerRenderPropertiesService
             }
 
             for (BaseHighlighter highlighter : highlighters) {
+                if(highlighter == null)
+                    continue;
+
                 PlayerRenderProperties properties = highlighter.getRenderProperties(player, localPlayer);
                 if (properties != null) {
                     decisions.add(properties);

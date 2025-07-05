@@ -37,7 +37,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean colorizePlayerMenu()
     {
-        return false;
+        return true;
     }
 
     @ConfigItem(
@@ -49,7 +49,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean friendsChatRank()
     {
-        return false;
+        return true;
     }
 
     @ConfigItem(
@@ -61,7 +61,31 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean clanChatRank()
     {
-        return false;
+        return true;
+    }
+
+    @ConfigItem(
+            keyName="tagMenuOption",
+            name="Tag Menu Option",
+            description="Show right click tag option on players",
+            section=defaultSection,
+            position = 5
+    )
+    default TagMenuOption tagMenuOption()
+    {
+        return TagMenuOption.SHIFT_RIGHT_CLICK;
+    }
+
+    @ConfigItem(
+            keyName="taggedPlayersList",
+            name="Tagged Player List",
+            description="Comma seperated list of usernames",
+            section=defaultSection,
+            position = 6
+    )
+    default String taggedPlayersList()
+    {
+        return "";
     }
 
     // ----------------------------------------------------
@@ -229,7 +253,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean highlightAttackable()
     {
-        return false;
+        return true;
     }
 
     @ConfigItem(
@@ -301,7 +325,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default HighlightSetting highlightOthers()
     {
-        return HighlightSetting.DISABLED;
+        return HighlightSetting.PVP;
     }
 
     @ConfigItem(
@@ -313,7 +337,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default Color highlightOthersColor()
     {
-        return new Color(0,0,0);
+        return new Color(255,154,0);
     }
 
     // ----------------------------------------------------
@@ -732,7 +756,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean attackablePlayerOutline()
     {
-        return defaultOutline;
+        return true;
     }
 
     @ConfigItem(
@@ -876,7 +900,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean taggedPlayerOutline()
     {
-        return defaultOutline;
+        return true;
     }
 
     @ConfigItem(
@@ -915,30 +939,6 @@ public interface PlayerIndicatorExtendedConfig extends Config
         return defaultNamelocation;
     }
 
-    @ConfigItem(
-            keyName="tagMenuOption",
-            name="Tag Menu Option",
-            description="OFF=disabled, RIGHT_CLICK=always show, SHIFT_RIGHT_CLICK=only when SHIFT held",
-            section=taggedSection,
-            position = 5
-    )
-    default TagMenuOption tagMenuOption()
-    {
-        return TagMenuOption.OFF;
-    }
-
-    @ConfigItem(
-            keyName="taggedPlayersList",
-            name="Tagged Player List",
-            description="Multi-line list of players (one per line).",
-            section=taggedSection,
-            position = 6
-    )
-    default String taggedPlayersList()
-    {
-        return "";
-    }
-
     // ----------------------------------------------------
     // 11) Others settings
     // ----------------------------------------------------
@@ -972,7 +972,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean othersPlayerOutline()
     {
-        return defaultOutline;
+        return true;
     }
 
     @ConfigItem(
