@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import com.google.inject.Provider;
 import com.google.inject.Provides;
+import com.playerindicatorextended.Highlighters.ClanMemberHighlighter;
+import com.playerindicatorextended.Highlighters.FriendsHighlighter;
 import com.playerindicatorextended.Highlighters.OwnPlayerHighlighter;
 import com.playerindicatorextended.Highlighters.TaggedPlayerHighlighter;
 import com.playerindicatorextended.PlayerRender.PlayerMinimapOverlay;
@@ -41,11 +43,15 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
     @Inject private PlayerRenderPropertiesService renderDecisionService;
     @Inject private PlayerSceneOverlay playerSceneOverlay;
     @Inject private PlayerMinimapOverlay  playerMinimapOverlay;
-    @Inject private OwnPlayerHighlighter ownPlayerHighlighter;
-    @Inject private TaggedPlayerHighlighter  taggedPlayerHighlighter;
     @Inject private ConfigManager configManager;
     @Inject private EventBus eventBus;
     @Inject private Provider<MenuManager> menuManager;
+
+
+    @Inject private OwnPlayerHighlighter ownPlayerHighlighter;
+    @Inject private TaggedPlayerHighlighter  taggedPlayerHighlighter;
+    @Inject private FriendsHighlighter  friendsHighlighter;
+    @Inject private ClanMemberHighlighter clanMemberHighlighter;
 
     @Override
     protected void startUp()
@@ -53,6 +59,8 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
         log.info("PlayerIndicatorExtendedPlugin started");
         renderDecisionService.registerHighlighter(ownPlayerHighlighter);
         renderDecisionService.registerHighlighter(taggedPlayerHighlighter);
+        renderDecisionService.registerHighlighter(friendsHighlighter);
+        renderDecisionService.registerHighlighter(clanMemberHighlighter);
 
         eventBus.register(taggedPlayerHighlighter);
 

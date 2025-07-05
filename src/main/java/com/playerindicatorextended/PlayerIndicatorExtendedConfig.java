@@ -13,7 +13,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     boolean defaultTile = false;
     boolean defaultOutline = false;
     boolean defaultHull = false;
-    NameLocation defaultNamelocation = NameLocation.DISABLED;
+    NameLocation defaultNamelocation = NameLocation.ABOVE_HEAD;
     MinimapAnimation defaultMinimapanimation = MinimapAnimation.STATIC;
 
     // ----------------------------------------------------
