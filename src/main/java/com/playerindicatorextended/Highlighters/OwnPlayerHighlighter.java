@@ -47,7 +47,8 @@ public class OwnPlayerHighlighter extends BaseHighlighter
                 .renderTile(config.ownPlayerPlayerTile())
                 .renderHull(config.ownPlayerPlayerHull())
                 .priority(HighlighterType.OWN_PLAYER.getPriority())
-                .renderClanChatRank(true)
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.friendsChatRank())
                 .build();
 
         return Collections.singletonList(decision);

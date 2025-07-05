@@ -65,16 +65,11 @@ public class PlayerSceneOverlay extends Overlay
                 renderHelper.drawLabel(g, player, decision.getRenderLabel(), decision.getRenderLabelLocation(), color);
 
             BufferedImage rankImage = null;
-            if (decision.isRenderFriendsChatRank() && getFriendsChatRank(player) != null)
-            {
-                if (getFriendsChatRank(player) != UNRANKED)
-                {
-                    rankImage = chatIconManager.getRankImage(getFriendsChatRank(player));
-                }
-            }
-            else if (decision.isRenderClanChatRank() && getClanTitle(player) != null)
+            if (decision.isRenderClanChatRank() && getClanTitle(player) != null && chatIconManager.getRankImage(getClanTitle(player)) != null)
             {
                 rankImage = chatIconManager.getRankImage(getClanTitle(player));
+            }else if (decision.isRenderFriendsChatRank() && getFriendsChatRank(player) != null && getFriendsChatRank(player) != UNRANKED){
+                rankImage = chatIconManager.getRankImage(getFriendsChatRank(player));
             }
 
 

@@ -166,7 +166,6 @@ public class PlayerRenderHelper {
         switch (anim)
         {
             case STATIC:
-                log.info("clip: {}, drawing at {},{}", g.getClipBounds(), x, y);
                 fillCircle(g, x, y, baseSize, color);
                 break;
 

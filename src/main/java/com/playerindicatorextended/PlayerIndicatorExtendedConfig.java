@@ -4,16 +4,69 @@ import com.playerindicatorextended.enums.MinimapAnimation;
 import com.playerindicatorextended.enums.NameLocation;
 import com.playerindicatorextended.enums.TagMenuOption;
 import net.runelite.client.config.*;
-import net.runelite.client.plugins.playerindicators.PlayerNameLocation;
 
 import java.awt.*;
 
 @ConfigGroup("playerindicatorextended")
 public interface PlayerIndicatorExtendedConfig extends Config
 {
+    boolean defaultTile = false;
+    boolean defaultOutline = false;
+    boolean defaultHull = false;
+    NameLocation defaultNamelocation = NameLocation.DISABLED;
+    MinimapAnimation defaultMinimapanimation = MinimapAnimation.STATIC;
+
+    // ----------------------------------------------------
+    // 0) Some defaults
+    // ----------------------------------------------------
+
+    @ConfigSection(
+            name="Default settings",
+            description="Some default settings",
+            position=0
+    )
+    String defaultSection = "defaultSection";
+
+    @ConfigItem(
+            keyName="colorizePlayerMenu",
+            name="Colorize player menu",
+            description="Shows player names in their respective color when right clicking",
+            section = defaultSection,
+            position=0
+    )
+    default boolean colorizePlayerMenu()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName="friendsChatRank",
+            name="Show friends chat ranks",
+            description="Show the friends chat rank icons",
+            section = defaultSection,
+            position=1
+    )
+    default boolean friendsChatRank()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName="clanChatRank",
+            name="Show clan chat ranks",
+            description="Show the clan chat rank icons",
+            section = defaultSection,
+            position=2
+    )
+    default boolean clanChatRank()
+    {
+        return false;
+    }
+
     // ----------------------------------------------------
     // 1) Highlight settings
     // ----------------------------------------------------
+
     @ConfigSection(
             name="Highlight settings",
             description="Toggle and color various types of players",
@@ -187,7 +240,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default Color highlightAttackableColor()
     {
-        return Color.YELLOW;
+        return new Color(170,0,0);
     }
 
     @ConfigItem(
@@ -211,7 +264,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default Color highlightIgnoreColor()
     {
-        return Color.BLACK;
+        return new Color(0,0,0);
     }
 
     @ConfigItem(
@@ -235,7 +288,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default Color highlightTaggedColor()
     {
-        return Color.BLACK;
+        return new Color(170,0,255);
     }
 
     @ConfigItem(
@@ -259,7 +312,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default Color highlightOthersColor()
     {
-        return Color.BLACK;
+        return new Color(0,0,0);
     }
 
     // ----------------------------------------------------
@@ -283,7 +336,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean ownPlayerPlayerTile()
     {
-        return false;
+        return defaultTile;
     }
 
     @ConfigItem(
@@ -295,7 +348,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean ownPlayerPlayerOutline()
     {
-        return false;
+        return defaultOutline;
     }
 
     @ConfigItem(
@@ -307,7 +360,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean ownPlayerPlayerHull()
     {
-        return false;
+        return defaultHull;
     }
 
     @ConfigItem(
@@ -319,7 +372,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default MinimapAnimation ownPlayerPlayerMinimapAnimation()
     {
-        return MinimapAnimation.NONE;
+        return defaultMinimapanimation;
     }
 
     @ConfigItem(
@@ -331,7 +384,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation ownPlayerPlayerNameLocation()
     {
-        return NameLocation.DISABLED;
+        return defaultNamelocation;
     }
 
     // ----------------------------------------------------
@@ -353,7 +406,9 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=partySection,
             position=0
     )
-    default boolean partyPlayerTile() { return false; }
+    default boolean partyPlayerTile() {
+        return defaultTile;
+    }
 
     @ConfigItem(
             keyName="partyPlayerOutline",
@@ -362,7 +417,9 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=partySection,
             position=1
     )
-    default boolean partyPlayerOutline() { return false; }
+    default boolean partyPlayerOutline() {
+        return defaultOutline;
+    }
 
     @ConfigItem(
             keyName="partyPlayerHull",
@@ -371,7 +428,9 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=partySection,
             position=2
     )
-    default boolean partyPlayerHull() { return false; }
+    default boolean partyPlayerHull() {
+        return defaultHull;
+    }
 
     @ConfigItem(
             keyName="partyPlayerMinimapAnimation",
@@ -380,7 +439,9 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=partySection,
             position=3
     )
-    default MinimapAnimation partyPlayerMinimapAnimation() { return MinimapAnimation.NONE; }
+    default MinimapAnimation partyPlayerMinimapAnimation() {
+        return defaultMinimapanimation;
+    }
 
     @ConfigItem(
             keyName="partyPlayerNameLocation",
@@ -389,7 +450,9 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=partySection,
             position=4
     )
-    default NameLocation partyPlayerNameLocation() { return NameLocation.DISABLED; }
+    default NameLocation partyPlayerNameLocation() {
+        return defaultNamelocation;
+    }
 
 
     // ----------------------------------------------------
@@ -411,7 +474,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsSection,
             position=0
     )
-    default boolean friendsPlayerTile() { return false; }
+    default boolean friendsPlayerTile() { return defaultTile; }
 
     @ConfigItem(
             keyName="friendsPlayerOutline",
@@ -420,7 +483,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsSection,
             position=1
     )
-    default boolean friendsPlayerOutline() { return false; }
+    default boolean friendsPlayerOutline() { return defaultOutline; }
 
     @ConfigItem(
             keyName="friendsPlayerHull",
@@ -429,7 +492,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsSection,
             position=2
     )
-    default boolean friendsPlayerHull() { return false; }
+    default boolean friendsPlayerHull() { return defaultHull; }
 
     @ConfigItem(
             keyName="friendsPlayerMinimapAnimation",
@@ -438,7 +501,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsSection,
             position=3
     )
-    default MinimapAnimation friendsPlayerMinimapAnimation() { return MinimapAnimation.NONE; }
+    default MinimapAnimation friendsPlayerMinimapAnimation() { return defaultMinimapanimation; }
 
     @ConfigItem(
             keyName="friendsPlayerNameLocation",
@@ -447,7 +510,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsSection,
             position=4
     )
-    default NameLocation friendsPlayerNameLocation() { return NameLocation.DISABLED; }
+    default NameLocation friendsPlayerNameLocation() { return defaultNamelocation; }
 
     // ----------------------------------------------------
     // 5) Friends Chat settings
@@ -468,7 +531,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsChatSection,
             position=0
     )
-    default boolean friendsChatPlayerTile() { return false; }
+    default boolean friendsChatPlayerTile() { return defaultTile; }
 
     @ConfigItem(
             keyName="friendsChatPlayerOutline",
@@ -477,7 +540,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsChatSection,
             position=1
     )
-    default boolean friendsChatPlayerOutline() { return false; }
+    default boolean friendsChatPlayerOutline() { return defaultOutline; }
 
     @ConfigItem(
             keyName="friendsChatPlayerHull",
@@ -486,7 +549,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsChatSection,
             position=2
     )
-    default boolean friendsChatPlayerHull() { return false; }
+    default boolean friendsChatPlayerHull() { return defaultHull; }
 
     @ConfigItem(
             keyName="friendsChatPlayerMinimapAnimation",
@@ -495,7 +558,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsChatSection,
             position=3
     )
-    default MinimapAnimation friendsChatPlayerMinimapAnimation() { return MinimapAnimation.NONE; }
+    default MinimapAnimation friendsChatPlayerMinimapAnimation() { return defaultMinimapanimation; }
 
     @ConfigItem(
             keyName="friendsChatPlayerNameLocation",
@@ -504,7 +567,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=friendsChatSection,
             position=4
     )
-    default NameLocation friendsChatPlayerNameLocation() { return NameLocation.DISABLED; }
+    default NameLocation friendsChatPlayerNameLocation() { return defaultNamelocation; }
 
     // ----------------------------------------------------
     // 6) Team Member settings
@@ -525,7 +588,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=teamSection,
             position=0
     )
-    default boolean teamPlayerTile() { return false; }
+    default boolean teamPlayerTile() { return defaultTile; }
 
     @ConfigItem(
             keyName="teamPlayerOutline",
@@ -534,7 +597,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=teamSection,
             position=1
     )
-    default boolean teamPlayerOutline() { return false; }
+    default boolean teamPlayerOutline() { return defaultOutline; }
 
     @ConfigItem(
             keyName="teamPlayerHull",
@@ -543,7 +606,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=teamSection,
             position=2
     )
-    default boolean teamPlayerHull() { return false; }
+    default boolean teamPlayerHull() { return defaultHull; }
 
     @ConfigItem(
             keyName="teamPlayerMinimapAnimation",
@@ -552,7 +615,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=teamSection,
             position=3
     )
-    default MinimapAnimation teamPlayerMinimapAnimation() { return MinimapAnimation.NONE; }
+    default MinimapAnimation teamPlayerMinimapAnimation() { return defaultMinimapanimation; }
 
     @ConfigItem(
             keyName="teamPlayerNameLocation",
@@ -561,7 +624,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
             section=teamSection,
             position=4
     )
-    default NameLocation teamPlayerNameLocation() { return NameLocation.DISABLED; }
+    default NameLocation teamPlayerNameLocation() { return defaultNamelocation; }
 
     // ----------------------------------------------------
     // 7) Clan settings
@@ -620,7 +683,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default MinimapAnimation clanPlayerMinimapAnimation()
     {
-        return MinimapAnimation.NONE;
+        return defaultMinimapanimation;
     }
 
     @ConfigItem(
@@ -632,7 +695,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation clanPlayerNameLocation()
     {
-        return NameLocation.DISABLED;
+        return defaultNamelocation;
     }
 
     // ----------------------------------------------------
@@ -656,7 +719,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean attackablePlayerTile()
     {
-        return false;
+        return defaultTile;
     }
 
     @ConfigItem(
@@ -668,7 +731,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean attackablePlayerOutline()
     {
-        return false;
+        return defaultOutline;
     }
 
     @ConfigItem(
@@ -680,7 +743,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean attackablePlayerHull()
     {
-        return false;
+        return defaultHull;
     }
 
     @ConfigItem(
@@ -692,7 +755,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default MinimapAnimation attackablePlayerMinimapAnimation()
     {
-        return MinimapAnimation.NONE;
+        return defaultMinimapanimation;
     }
 
     @ConfigItem(
@@ -704,7 +767,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation attackablePlayerNameLocation()
     {
-        return NameLocation.DISABLED;
+        return defaultNamelocation;
     }
 
     // ----------------------------------------------------
@@ -728,7 +791,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean ignoredPlayerTile()
     {
-        return false;
+        return defaultTile;
     }
 
     @ConfigItem(
@@ -740,7 +803,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean ignoredPlayerOutline()
     {
-        return false;
+        return defaultOutline;
     }
 
     @ConfigItem(
@@ -752,7 +815,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean ignoredPlayerHull()
     {
-        return false;
+        return defaultHull;
     }
 
     @ConfigItem(
@@ -764,7 +827,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default MinimapAnimation ignoredPlayerMinimapAnimation()
     {
-        return MinimapAnimation.NONE;
+        return defaultMinimapanimation;
     }
 
     @ConfigItem(
@@ -776,7 +839,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation ignoredPlayerNameLocation()
     {
-        return NameLocation.DISABLED;
+        return defaultNamelocation;
     }
 
     // ----------------------------------------------------
@@ -800,7 +863,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean taggedPlayerTile()
     {
-        return false;
+        return defaultTile;
     }
 
     @ConfigItem(
@@ -812,7 +875,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean taggedPlayerOutline()
     {
-        return false;
+        return defaultOutline;
     }
 
     @ConfigItem(
@@ -824,7 +887,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean taggedPlayerHull()
     {
-        return false;
+        return defaultHull;
     }
 
     @ConfigItem(
@@ -836,7 +899,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default MinimapAnimation taggedPlayerMinimapAnimation()
     {
-        return MinimapAnimation.NONE;
+        return defaultMinimapanimation;
     }
 
     @ConfigItem(
@@ -848,7 +911,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation taggedPlayerNameLocation()
     {
-        return NameLocation.DISABLED;
+        return defaultNamelocation;
     }
 
     @ConfigItem(
@@ -896,7 +959,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean othersPlayerTile()
     {
-        return false;
+        return defaultTile;
     }
 
     @ConfigItem(
@@ -908,7 +971,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean othersPlayerOutline()
     {
-        return false;
+        return defaultOutline;
     }
 
     @ConfigItem(
@@ -920,7 +983,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default boolean othersPlayerHull()
     {
-        return false;
+        return defaultHull;
     }
 
     @ConfigItem(
@@ -932,7 +995,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default MinimapAnimation othersPlayerMinimapAnimation()
     {
-        return MinimapAnimation.NONE;
+        return defaultMinimapanimation;
     }
 
     @ConfigItem(
@@ -944,7 +1007,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation othersPlayerNameLocation()
     {
-        return NameLocation.DISABLED;
+        return defaultNamelocation;
     }
 
     // ----------------------------------------------------
@@ -1008,7 +1071,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default int minimapCircleSize()
     {
-        return 3;
+        return 5;
     }
 
     @Range(min=20, max=20000)
