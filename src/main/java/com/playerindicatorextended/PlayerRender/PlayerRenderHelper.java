@@ -16,10 +16,7 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Singleton
@@ -35,24 +32,25 @@ public class PlayerRenderHelper {
         this.config = config;
     }
 
-    protected void drawTile(Graphics2D g, Player p, Color color)
-    {
-        LocalPoint lp= p.getLocalLocation();
-        if(lp==null)return;
+    protected void drawTile(Graphics2D g, Player p, Color color) {
+        LocalPoint lp = p.getLocalLocation();
 
-        Polygon poly= Perspective.getCanvasTilePoly(client, lp);
-        if(poly==null)return;
+        if (lp == null)
+            return;
 
-        Stroke old= g.getStroke();
+        Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+        if (poly == null)
+            return;
+
+        Stroke old = g.getStroke();
         g.setStroke(new BasicStroke(config.tileThickness()));
         g.setColor(color);
         g.draw(poly);
         g.setStroke(old);
     }
 
-    protected void drawOutline(Player p, Color color)
-    {
-        if(p.getModel()==null)return;
+    protected void drawOutline(Player p, Color color) {
+        if (p.getModel() == null) return;
         modelOutlineRenderer.drawOutline(
                 p,
                 config.outlineThickness(),
@@ -61,26 +59,23 @@ public class PlayerRenderHelper {
         );
     }
 
-    protected void drawHull(Graphics2D g, Player p, Color color)
-    {
-        Shape hull= p.getConvexHull();
-        if(hull==null)
+    protected void drawHull(Graphics2D g, Player p, Color color) {
+        Shape hull = p.getConvexHull();
+        if (hull == null)
             return;
-        Stroke old= g.getStroke();
+        Stroke old = g.getStroke();
         g.setStroke(new BasicStroke(config.hullThickness()));
         g.setColor(color);
         g.draw(hull);
         g.setStroke(old);
     }
 
-    protected void drawName(Graphics2D g, Player p, String nameText, NameLocation nameLoc, Color nameColor, BufferedImage icon)
-    {
+    protected void drawName(Graphics2D g, Player p, String nameText, NameLocation nameLoc, Color nameColor, BufferedImage icon) {
         if (nameLoc != NameLocation.DISABLED)
             drawText(g, p, nameText, nameLoc, nameColor, icon);
     }
 
-    protected void drawLabel(Graphics2D g, Player p, String labelText, NameLocation labelLoc, Color labelColor)
-    {
+    protected void drawLabel(Graphics2D g, Player p, String labelText, NameLocation labelLoc, Color labelColor) {
         if (labelLoc != NameLocation.DISABLED)
             drawText(g, p, labelText, labelLoc, labelColor, null);
     }
@@ -91,14 +86,12 @@ public class PlayerRenderHelper {
             String text,
             NameLocation loc,
             Color color,
-            BufferedImage icon)
-    {
+            BufferedImage icon) {
         if (loc == NameLocation.DISABLED || text == null || text.isEmpty())
             return;
 
         int base;
-        switch (loc)
-        {
+        switch (loc) {
             case ABOVE_HEAD:
                 base = p.getLogicalHeight() + 60;
                 break;
@@ -118,8 +111,7 @@ public class PlayerRenderHelper {
 
         int dx = pt.getX();
         int dy = pt.getY();
-        if (loc == NameLocation.UNDER_MODEL)
-        {
+        if (loc == NameLocation.UNDER_MODEL) {
             dy += 20;
         }
 
@@ -127,8 +119,7 @@ public class PlayerRenderHelper {
         int iconWidth = icon != null ? icon.getWidth() + 3 : 0;
 
         // Draw icon if present
-        if (icon != null)
-        {
+        if (icon != null) {
             int iconY = dy - icon.getHeight(); // top-align with text
             int iconX = dx - iconWidth;
             g.drawImage(icon, iconX, iconY, null);
@@ -143,8 +134,7 @@ public class PlayerRenderHelper {
     }
 
     // Minimap
-    protected void drawMinimapDot(Graphics2D g, Player p, Color color, MinimapAnimation anim)
-    {
+    protected void drawMinimapDot(Graphics2D g, Player p, Color color, MinimapAnimation anim) {
         if (anim == MinimapAnimation.NONE)
             return;
 
@@ -163,41 +153,35 @@ public class PlayerRenderHelper {
         // progress from 0.0 to 1.0, looping every 'speed' milliseconds
         double progress = (System.currentTimeMillis() % speed) / (double) speed;
 
-        switch (anim)
-        {
+        switch (anim) {
             case STATIC:
                 fillCircle(g, x, y, baseSize, color);
                 break;
 
-            case PULSE:
-            {
+            case PULSE: {
                 double scale = 1 + 0.5 * Math.sin(progress * 2 * Math.PI);
-                int radius = (int)(baseSize * scale);
+                int radius = (int) (baseSize * scale);
                 fillCircle(g, x, y, radius, color);
                 break;
             }
 
-            case BLINK:
-            {
-                if (progress < 0.5)
-                {
+            case BLINK: {
+                if (progress < 0.5) {
                     fillCircle(g, x, y, baseSize, color);
                 }
                 break;
             }
 
-            case SONAR:
-            {
+            case SONAR: {
                 final int maxGrowth = 20; // max radius increase independent of base size
-                int radius = baseSize + (int)(progress * maxGrowth);
+                int radius = baseSize + (int) (progress * maxGrowth);
                 drawCircle(g, x, y, radius, color);
                 break;
             }
 
-            case WAVE:
-            {
+            case WAVE: {
                 double wave = Math.sin(progress * 2 * Math.PI);
-                int radius = (int)(baseSize + wave * baseSize);
+                int radius = (int) (baseSize + wave * baseSize);
                 if (radius < 2) radius = 2;
                 fillCircle(g, x, y, radius, color);
                 break;
@@ -208,15 +192,14 @@ public class PlayerRenderHelper {
         }
     }
 
-    public void fillCircle(Graphics2D g,int cx,int cy,int size,Color c)
-    {
+    public void fillCircle(Graphics2D g, int cx, int cy, int size, Color c) {
         g.setColor(c);
-        g.fillOval(cx-size/2, cy-size/2, size,size);
+        g.fillOval(cx - size / 2, cy - size / 2, size, size);
     }
-    public void drawCircle(Graphics2D g,int cx,int cy,int size,Color c)
-    {
-        g.setColor(new Color(c.getRed(),c.getGreen(),c.getBlue(),120));
-        g.drawOval(cx-size/2, cy-size/2, size,size);
+
+    public void drawCircle(Graphics2D g, int cx, int cy, int size, Color c) {
+        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), 120));
+        g.drawOval(cx - size / 2, cy - size / 2, size, size);
     }
 
 }
