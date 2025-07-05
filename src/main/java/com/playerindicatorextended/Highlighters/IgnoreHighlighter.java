@@ -5,68 +5,43 @@ import com.playerindicatorextended.PlayerRender.PlayerRenderProperties;
 import com.playerindicatorextended.PlayerRender.PlayerRenderPropertiesService;
 import com.playerindicatorextended.enums.HighlightSetting;
 import com.playerindicatorextended.enums.HighlighterType;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Ignore;
 import net.runelite.api.Player;
 import net.runelite.api.WorldView;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Singleton
 @Slf4j
-public class TaggedPlayerHighlighter extends BaseHighlighter
+public class IgnoreHighlighter extends BaseHighlighter
 {
     private final Client client;
     private final PlayerIndicatorExtendedConfig config;
     private final PlayerRenderPropertiesService playerRenderPropertiesService;
 
-    @Getter
-    private final Set<String> taggedNames;
-
-
     @Inject
-    public TaggedPlayerHighlighter(Client client, PlayerIndicatorExtendedConfig config, PlayerRenderPropertiesService playerRenderPropertiesService)
+    public IgnoreHighlighter(Client client, PlayerIndicatorExtendedConfig config, PlayerRenderPropertiesService playerRenderPropertiesService)
     {
         this.client = client;
         this.config = config;
         this.playerRenderPropertiesService = playerRenderPropertiesService;
-        this.taggedNames = new HashSet<>();
-    }
-
-    @Subscribe
-    public void onConfigChanged(ConfigChanged e)
-    {
-        log.info("onConfigChanged");
-        if(!"playerindicatorextended".equals(e.getGroup()))
-            return;
-
-        this.taggedNames.clear();
-
-        String saved = config.taggedPlayersList();
-        if (saved != null)
-        {
-            for (String name : Text.fromCSV(saved))
-            {
-                this.taggedNames.add(name.trim());
-            }
-        }
     }
 
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
-        if(config.highlightTagged() == HighlightSetting.DISABLED){
+        if(config.highlightIgnore() == HighlightSetting.DISABLED){
             return Collections.emptyList();
         }
 
-        if(config.highlightTagged() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
+        if(config.highlightIgnore() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
             return Collections.emptyList();
         }
 
@@ -86,23 +61,20 @@ public class TaggedPlayerHighlighter extends BaseHighlighter
             {
                 continue;
             }
-            String playerName = player.getName().toLowerCase();
 
-            if (taggedNames.contains(playerName))
-            {
+            if (isIgnored(player)){
                 PlayerRenderProperties decision = PlayerRenderProperties.builder()
                         .player(player)
-                        .renderColor(config.highlightTaggedColor())
-                        .renderNameLocation(config.taggedPlayerNameLocation())
-                        .renderOutline(config.taggedPlayerOutline())
-                        .renderMinimap(config.taggedPlayerMinimapAnimation())
-                        .renderTile(config.taggedPlayerTile())
-                        .renderHull(config.taggedPlayerHull())
-                        .priority(HighlighterType.TAGGED.getPriority())
+                        .renderColor(config.highlightIgnoreColor())
+                        .renderNameLocation(config.ignoredPlayerNameLocation())
+                        .renderOutline(config.ignoredPlayerOutline())
+                        .renderMinimap(config.ignoredPlayerMinimapAnimation())
+                        .renderTile(config.ignoredPlayerTile())
+                        .renderHull(config.ignoredPlayerHull())
+                        .priority(HighlighterType.TEAM_MEMBERS.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();
-
                 result.add(decision);
             }
         }
@@ -110,18 +82,14 @@ public class TaggedPlayerHighlighter extends BaseHighlighter
         return result;
     }
 
-    public void tagPlayer(String name)
+    private boolean isIgnored(Player player)
     {
-        taggedNames.add(name.toLowerCase());
-    }
+        String name = player.getName();
+        if(name == null || client.getIgnoreContainer() == null){
+            return false;
+        }
 
-    public void untagPlayer(String name)
-    {
-        taggedNames.remove(name.toLowerCase());
-    }
-
-    public boolean isTagged(String name)
-    {
-        return taggedNames.contains(name.toLowerCase());
+        Ignore onIgnoreList = client.getIgnoreContainer().findByName(name);
+        return (onIgnoreList != null);
     }
 }

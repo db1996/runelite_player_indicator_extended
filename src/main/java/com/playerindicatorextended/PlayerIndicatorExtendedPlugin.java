@@ -4,10 +4,7 @@ import javax.inject.Inject;
 
 import com.google.inject.Provider;
 import com.google.inject.Provides;
-import com.playerindicatorextended.Highlighters.ClanMemberHighlighter;
-import com.playerindicatorextended.Highlighters.FriendsHighlighter;
-import com.playerindicatorextended.Highlighters.OwnPlayerHighlighter;
-import com.playerindicatorextended.Highlighters.TaggedPlayerHighlighter;
+import com.playerindicatorextended.Highlighters.*;
 import com.playerindicatorextended.PlayerRender.PlayerMinimapOverlay;
 import com.playerindicatorextended.PlayerRender.PlayerRenderProperties;
 import com.playerindicatorextended.PlayerRender.PlayerSceneOverlay;
@@ -49,18 +46,28 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
 
 
     @Inject private OwnPlayerHighlighter ownPlayerHighlighter;
-    @Inject private TaggedPlayerHighlighter  taggedPlayerHighlighter;
+    @Inject private PartyHighlighter  partyHighlighter;
     @Inject private FriendsHighlighter  friendsHighlighter;
+    @Inject private FriendsChatHighlighter friendsChatHighlighter;
+    @Inject private TeamHighlighter teamHighlighter;
     @Inject private ClanMemberHighlighter clanMemberHighlighter;
+    @Inject private AttackableHighlighter attackableHighlighter;
+    @Inject private TaggedPlayerHighlighter  taggedPlayerHighlighter;
+    @Inject private IgnoreHighlighter ignoreHighlighter;
 
     @Override
     protected void startUp()
     {
         log.info("PlayerIndicatorExtendedPlugin started");
         renderDecisionService.registerHighlighter(ownPlayerHighlighter);
-        renderDecisionService.registerHighlighter(taggedPlayerHighlighter);
+        renderDecisionService.registerHighlighter(partyHighlighter);
         renderDecisionService.registerHighlighter(friendsHighlighter);
+        renderDecisionService.registerHighlighter(friendsChatHighlighter);
+        renderDecisionService.registerHighlighter(teamHighlighter);
         renderDecisionService.registerHighlighter(clanMemberHighlighter);
+        renderDecisionService.registerHighlighter(attackableHighlighter);
+        renderDecisionService.registerHighlighter(taggedPlayerHighlighter);
+        renderDecisionService.registerHighlighter(ignoreHighlighter);
 
         eventBus.register(taggedPlayerHighlighter);
 
@@ -174,7 +181,6 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
                     coloredPlayerNameInMenu +
                     originalTarget.substring(nameIndexInTarget + playerName.length());
         } else {
-            log.warn("Player name '{}' not found in original target '{}'. Cannot apply color without losing level formatting.", playerName, originalTarget);
             newTarget = originalTarget;
         }
 

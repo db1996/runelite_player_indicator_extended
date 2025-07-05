@@ -2,6 +2,8 @@ package com.playerindicatorextended.Highlighters;
 
 import com.playerindicatorextended.PlayerIndicatorExtendedConfig;
 import com.playerindicatorextended.PlayerRender.PlayerRenderProperties;
+import com.playerindicatorextended.PlayerRender.PlayerRenderPropertiesService;
+import com.playerindicatorextended.enums.HighlightSetting;
 import com.playerindicatorextended.enums.HighlighterType;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -21,19 +23,30 @@ public class FriendsChatHighlighter extends BaseHighlighter
 {
     private final Client client;
     private final PlayerIndicatorExtendedConfig config;
+    private final PlayerRenderPropertiesService playerRenderPropertiesService;
 
     @Inject
-    public FriendsChatHighlighter(Client client, PlayerIndicatorExtendedConfig config)
+    public FriendsChatHighlighter(Client client, PlayerIndicatorExtendedConfig config, PlayerRenderPropertiesService playerRenderPropertiesService)
     {
         this.client = client;
         this.config = config;
+        this.playerRenderPropertiesService = playerRenderPropertiesService;
     }
 
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
-        if(!config.highlightFriendsChat()){
+        if(config.highlightFriendsChat() == HighlightSetting.DISABLED){
+            return Collections.emptyList();
+        }
+
+        if(config.highlightFriendsChat() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
+            return Collections.emptyList();
+        }
+
+        Player localPlayer = client.getLocalPlayer();
+        if(localPlayer == null){
             return Collections.emptyList();
         }
 
@@ -44,9 +57,9 @@ public class FriendsChatHighlighter extends BaseHighlighter
 
         List<PlayerRenderProperties> result = new ArrayList<>();
         for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null)
+            if (player == null || player.getName() == null || player.equals(localPlayer))
             {
-                return null;
+                continue;
             }
 
             if (player.isFriendsChatMember()){

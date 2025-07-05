@@ -2,7 +2,9 @@ package com.playerindicatorextended.PlayerRender;
 
 import com.playerindicatorextended.Highlighters.BaseHighlighter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.gameval.VarbitID;
 
 import javax.inject.Singleton;
 import java.util.*;
@@ -12,6 +14,7 @@ import java.util.*;
 public class PlayerRenderPropertiesService
 {
     private final List<BaseHighlighter> highlighters = new ArrayList<>();
+
 
     public void registerHighlighter(BaseHighlighter highlighter)
     {
@@ -25,6 +28,10 @@ public class PlayerRenderPropertiesService
 
         for (BaseHighlighter highlighter : highlighters)
         {
+            if(highlighter == null){
+                continue;
+            }
+
             for (PlayerRenderProperties decision : highlighter.getRenderDecisions())
             {
                 decisionMap.merge(decision.getPlayer(), decision, this::mergeDecisions);
@@ -43,5 +50,9 @@ public class PlayerRenderPropertiesService
     private PlayerRenderProperties mergeDecisions(PlayerRenderProperties a, PlayerRenderProperties b)
     {
         return a.getPriority() >= b.getPriority() ? a : b;
+    }
+
+    public boolean isPvp(Client client){
+        return (client.getVarbitValue(VarbitID.INSIDE_WILDERNESS) == 1 || client.getVarbitValue(VarbitID.PVP_AREA_CLIENT) == 1);
     }
 }

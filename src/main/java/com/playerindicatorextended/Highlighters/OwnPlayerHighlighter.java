@@ -2,6 +2,8 @@ package com.playerindicatorextended.Highlighters;
 
 import com.playerindicatorextended.PlayerIndicatorExtendedConfig;
 import com.playerindicatorextended.PlayerRender.PlayerRenderProperties;
+import com.playerindicatorextended.PlayerRender.PlayerRenderPropertiesService;
+import com.playerindicatorextended.enums.HighlightSetting;
 import com.playerindicatorextended.enums.HighlighterType;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -17,18 +19,25 @@ public class OwnPlayerHighlighter extends BaseHighlighter
 {
     private final Client client;
     private final PlayerIndicatorExtendedConfig config;
+    private final PlayerRenderPropertiesService playerRenderPropertiesService;
 
     @Inject
-    public OwnPlayerHighlighter(Client client, PlayerIndicatorExtendedConfig config)
+    public OwnPlayerHighlighter(Client client, PlayerIndicatorExtendedConfig config, PlayerRenderPropertiesService  playerRenderPropertiesService)
     {
         this.client = client;
         this.config = config;
+        this.playerRenderPropertiesService = playerRenderPropertiesService;
+
     }
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
-        if(!config.highlightOwnPlayer()){
+        if(config.highlightOwnPlayer() == HighlightSetting.DISABLED){
+            return Collections.emptyList();
+        }
+
+        if(config.highlightOwnPlayer() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
             return Collections.emptyList();
         }
 
