@@ -11,6 +11,5 @@ public abstract class BaseHighlighter
 {
     public abstract HighlighterType getHighlighterType();
     public abstract int getPriority();
-    public abstract List<PlayerRenderProperties> getRenderDecisions();
     public abstract PlayerRenderProperties getRenderProperties(Player player, Player localPlayer);
 }

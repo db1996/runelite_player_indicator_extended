@@ -46,57 +46,17 @@ public class PartyHighlighter extends BaseHighlighter
     }
 
     @Override
-    public List<PlayerRenderProperties> getRenderDecisions()
-    {
-        if(config.highlightParty() == HighlightSetting.DISABLED){
-            return Collections.emptyList();
-        }
-
-        if(config.highlightParty() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
-            return Collections.emptyList();
-        }
-
-        Player localPlayer = client.getLocalPlayer();
-        if(localPlayer == null){
-            return Collections.emptyList();
-        }
-
-        WorldView worldView = client.getTopLevelWorldView();
-        if(worldView == null){
-            return Collections.emptyList();
-        }
-
-        List<PlayerRenderProperties> result = new ArrayList<>();
-        for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null || player.equals(localPlayer))
-            {
-                continue;
-            }
-
-            if (partyService.isInParty() && partyService.getMemberByDisplayName(player.getName()) != null){
-                PlayerRenderProperties decision = PlayerRenderProperties.builder()
-                        .player(player)
-                        .renderColor(config.highlightPartyColor())
-                        .renderNameLocation(config.partyPlayerNameLocation())
-                        .renderOutline(config.partyPlayerOutline())
-                        .renderMinimap(config.partyPlayerMinimapAnimation())
-                        .renderTile(config.partyPlayerTile())
-                        .renderHull(config.partyPlayerHull())
-                        .priority(this.getPriority())
-                        .renderClanChatRank(config.clanChatRank())
-                        .renderFriendsChatRank(config.friendsChatRank())
-                        .build();
-                result.add(decision);
-            }
-        }
-
-        return result;
-    }
-
-    @Override
     public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
     {
+        if(config.highlightParty() == HighlightSetting.DISABLED){
+            return null;
+        }
+
         if (player == null || player.getName() == null) {
+            return null;
+        }
+
+        if(config.highlightTagged() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
             return null;
         }
 

@@ -43,53 +43,6 @@ public class OthersHighlighter extends BaseHighlighter
         return this.getHighlighterType().getPriority();
     }
 
-    @Override
-    public List<PlayerRenderProperties> getRenderDecisions()
-    {
-        if(config.highlightOthers() == HighlightSetting.DISABLED){
-            return Collections.emptyList();
-        }
-
-        if(config.highlightOthers() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
-            return Collections.emptyList();
-        }
-
-        Player localPlayer = client.getLocalPlayer();
-        if(localPlayer == null){
-            log.info("Player not found");
-            return Collections.emptyList();
-        }
-
-        WorldView worldView = client.getTopLevelWorldView();
-        if(worldView == null){
-            return Collections.emptyList();
-        }
-
-        List<PlayerRenderProperties> result = new ArrayList<>();
-        for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null || Objects.equals(player.getName(), localPlayer.getName()))
-            {
-                continue;
-            }
-
-            PlayerRenderProperties decision = PlayerRenderProperties.builder()
-                    .player(player)
-                    .renderColor(config.highlightOthersColor())
-                    .renderNameLocation(config.othersPlayerNameLocation())
-                    .renderOutline(config.othersPlayerOutline())
-                    .renderMinimap(config.othersPlayerMinimapAnimation())
-                    .renderTile(config.othersPlayerTile())
-                    .renderHull(config.othersPlayerHull())
-                    .priority(this.getPriority())
-                    .renderClanChatRank(config.clanChatRank())
-                    .renderFriendsChatRank(config.friendsChatRank())
-                    .build();
-            result.add(decision);
-
-        }
-
-        return result;
-    }
 
     @Override
     public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)

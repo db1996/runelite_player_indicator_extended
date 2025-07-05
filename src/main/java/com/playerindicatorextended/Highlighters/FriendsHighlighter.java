@@ -41,56 +41,6 @@ public class FriendsHighlighter extends BaseHighlighter
     }
 
     @Override
-    public List<PlayerRenderProperties> getRenderDecisions()
-    {
-        if(config.highlightFriends() == HighlightSetting.DISABLED){
-            return Collections.emptyList();
-        }
-
-        if(config.highlightFriends() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
-            return Collections.emptyList();
-        }
-
-        Player localPlayer = client.getLocalPlayer();
-        if(localPlayer == null){
-            log.info("Player not found");
-            return Collections.emptyList();
-        }
-
-        WorldView worldView = client.getTopLevelWorldView();
-        if(worldView == null){
-            return Collections.emptyList();
-        }
-
-        List<PlayerRenderProperties> result = new ArrayList<>();
-        for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null || Objects.equals(player.getName(), localPlayer.getName()))
-            {
-                continue;
-            }
-
-            if(player.isFriend()){
-                PlayerRenderProperties decision = PlayerRenderProperties.builder()
-                        .player(player)
-                        .renderColor(config.highlightFriendsColor())
-                        .renderNameLocation(config.friendsPlayerNameLocation())
-                        .renderOutline(config.friendsPlayerOutline())
-                        .renderMinimap(config.friendsPlayerMinimapAnimation())
-                        .renderTile(config.friendsPlayerTile())
-                        .renderHull(config.friendsPlayerHull())
-                        .priority(this.getPriority())
-                        .renderClanChatRank(config.clanChatRank())
-                        .renderFriendsChatRank(config.friendsChatRank())
-                        .build();
-                result.add(decision);
-            }
-
-        }
-
-        return result;
-    }
-
-    @Override
     public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
     {
         if (config.highlightFriends() == HighlightSetting.DISABLED) {

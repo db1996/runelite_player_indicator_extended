@@ -44,54 +44,6 @@ public class ClanMemberHighlighter extends BaseHighlighter
     }
 
     @Override
-    public List<PlayerRenderProperties> getRenderDecisions()
-    {
-        if(config.highlightClan() == HighlightSetting.DISABLED){
-            return Collections.emptyList();
-        }
-
-        if(config.highlightClan() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
-            return Collections.emptyList();
-        }
-
-        Player localPlayer = client.getLocalPlayer();
-        if(localPlayer == null){
-            return Collections.emptyList();
-        }
-
-        WorldView worldView = client.getTopLevelWorldView();
-        if(worldView == null){
-            return Collections.emptyList();
-        }
-
-        List<PlayerRenderProperties> result = new ArrayList<>();
-        for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null || player.equals(localPlayer))
-            {
-                continue;
-            }
-            if(player.isClanMember()){
-                PlayerRenderProperties decision = PlayerRenderProperties.builder()
-                        .player(player)
-                        .renderColor(config.highlightClanColor())
-                        .renderNameLocation(config.clanPlayerNameLocation())
-                        .renderOutline(config.clanPlayerOutline())
-                        .renderMinimap(config.clanPlayerMinimapAnimation())
-                        .renderTile(config.clanPlayerTile())
-                        .renderHull(config.clanPlayerHull())
-                        .priority(this.getPriority())
-                        .renderClanChatRank(config.clanChatRank())
-                        .renderFriendsChatRank(config.clanChatRank())
-                        .build();
-                result.add(decision);
-            }
-
-        }
-
-        return result;
-    }
-
-    @Override
     public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
     {
         if (config.highlightClan() == HighlightSetting.DISABLED) {

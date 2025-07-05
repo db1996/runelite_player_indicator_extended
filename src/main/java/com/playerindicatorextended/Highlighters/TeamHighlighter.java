@@ -43,57 +43,17 @@ public class TeamHighlighter extends BaseHighlighter
     }
 
     @Override
-    public List<PlayerRenderProperties> getRenderDecisions()
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
     {
         if(config.highlightTeam() == HighlightSetting.DISABLED){
-            return Collections.emptyList();
+            return null;
+        }
+
+        if (player == null || player.getName() == null) {
+            return null;
         }
 
         if(config.highlightTeam() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
-            return Collections.emptyList();
-        }
-
-        Player localPlayer = client.getLocalPlayer();
-        if(localPlayer == null){
-            return Collections.emptyList();
-        }
-
-        WorldView worldView = client.getTopLevelWorldView();
-        if(worldView == null){
-            return Collections.emptyList();
-        }
-
-        List<PlayerRenderProperties> result = new ArrayList<>();
-        for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null || player.equals(localPlayer))
-            {
-                continue;
-            }
-
-            if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam()){
-                PlayerRenderProperties decision = PlayerRenderProperties.builder()
-                        .player(player)
-                        .renderColor(config.highlightTeamColor())
-                        .renderNameLocation(config.teamPlayerNameLocation())
-                        .renderOutline(config.teamPlayerOutline())
-                        .renderMinimap(config.teamPlayerMinimapAnimation())
-                        .renderTile(config.teamPlayerTile())
-                        .renderHull(config.teamPlayerHull())
-                        .priority(this.getPriority())
-                        .renderClanChatRank(config.clanChatRank())
-                        .renderFriendsChatRank(config.friendsChatRank())
-                        .build();
-                result.add(decision);
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
-    {
-        if (player == null || player.getName() == null) {
             return null;
         }
 

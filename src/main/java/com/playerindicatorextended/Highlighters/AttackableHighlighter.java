@@ -41,50 +41,6 @@ public class AttackableHighlighter extends BaseHighlighter
     }
 
     @Override
-    public List<PlayerRenderProperties> getRenderDecisions()
-    {
-        if(!config.highlightAttackable()){
-            return Collections.emptyList();
-        }
-
-        WorldView worldView = client.getTopLevelWorldView();
-        if(worldView == null){
-            return Collections.emptyList();
-        }
-
-        Player localPlayer = client.getLocalPlayer();
-        if(localPlayer == null){
-            return Collections.emptyList();
-        }
-
-        List<PlayerRenderProperties> result = new ArrayList<>();
-        for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null || player.equals(localPlayer))
-            {
-                continue;
-            }
-
-            if (canAttack(localPlayer, player)){
-                PlayerRenderProperties decision = PlayerRenderProperties.builder()
-                        .player(player)
-                        .renderColor(config.highlightAttackableColor())
-                        .renderNameLocation(config.attackablePlayerNameLocation())
-                        .renderOutline(config.attackablePlayerOutline())
-                        .renderMinimap(config.attackablePlayerMinimapAnimation())
-                        .renderTile(config.attackablePlayerTile())
-                        .renderHull(config.attackablePlayerHull())
-                        .priority(this.getPriority())
-                        .renderClanChatRank(config.clanChatRank())
-                        .renderFriendsChatRank(config.friendsChatRank())
-                        .build();
-                result.add(decision);
-            }
-        }
-
-        return result;
-    }
-
-    @Override
     public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
     {
         if (!config.highlightAttackable()) {
