@@ -4,8 +4,10 @@ import com.playerindicatorextended.Highlighters.BaseHighlighter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.WorldView;
 import net.runelite.api.gameval.VarbitID;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
 
@@ -14,34 +16,50 @@ import java.util.*;
 public class PlayerRenderPropertiesService
 {
     private final List<BaseHighlighter> highlighters = new ArrayList<>();
+    private final Client client;
 
+    @Inject
+    public PlayerRenderPropertiesService(Client client) {
+        this.client = client;
+    }
 
     public void registerHighlighter(BaseHighlighter highlighter)
     {
         log.debug("registering highlighter {}", highlighter);
         highlighters.add(highlighter);
+        resortHighlighters();
+    }
+
+    public void resortHighlighters()
+    {
+        highlighters.sort(Comparator.comparingInt(BaseHighlighter::getPriority).reversed());
     }
 
     public List<PlayerRenderProperties> getRenderDecisions()
     {
-        Map<Player, PlayerRenderProperties> decisionMap = new HashMap<>();
+        WorldView worldView = client.getTopLevelWorldView();
+        if(worldView == null){
+            return Collections.emptyList();
+        }
 
-        for (BaseHighlighter highlighter : highlighters)
-        {
-            if(highlighter == null){
-                continue;
-            }
-
-            for (PlayerRenderProperties decision : highlighter.getRenderDecisions())
-            {
-                decisionMap.merge(decision.getPlayer(), decision, this::mergeDecisions);
-            }
+        Player localPlayer = client.getLocalPlayer();
+        if(localPlayer == null){
+            return Collections.emptyList();
         }
 
         List<PlayerRenderProperties> decisions = new ArrayList<>();
-        for (Map.Entry<Player, PlayerRenderProperties> entry : decisionMap.entrySet()){
-            PlayerRenderProperties decision = entry.getValue();
-            decisions.add(decision);
+        for (Player player : worldView.players()) {
+            if (player == null || player.getName() == null) {
+                continue;
+            }
+
+            for (BaseHighlighter highlighter : highlighters) {
+                PlayerRenderProperties properties = highlighter.getRenderProperties(player, localPlayer);
+                if (properties != null) {
+                    decisions.add(properties);
+                    break;
+                }
+            }
         }
 
         return decisions;

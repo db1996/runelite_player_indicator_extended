@@ -31,6 +31,16 @@ public class OwnPlayerHighlighter extends BaseHighlighter
     }
 
     @Override
+    public HighlighterType getHighlighterType() {
+        return HighlighterType.OWN_PLAYER;
+    }
+
+    @Override
+    public int getPriority() {
+        return this.getHighlighterType().getPriority();
+    }
+
+    @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
         if(config.highlightOwnPlayer() == HighlightSetting.DISABLED){
@@ -55,11 +65,45 @@ public class OwnPlayerHighlighter extends BaseHighlighter
                 .renderMinimap(config.ownPlayerPlayerMinimapAnimation())
                 .renderTile(config.ownPlayerPlayerTile())
                 .renderHull(config.ownPlayerPlayerHull())
-                .priority(HighlighterType.OWN_PLAYER.getPriority())
+                .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())
                 .build();
 
         return Collections.singletonList(decision);
+    }
+
+    @Override
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
+    {
+        if (player == null) {
+            return null;
+        }
+
+        // Since this is own player highlighter, we want to check if the player is the local player
+        if (!player.equals(localPlayer)) {
+            return null;
+        }
+
+        if (config.highlightOwnPlayer() == HighlightSetting.DISABLED) {
+            return null;
+        }
+
+        if (config.highlightOwnPlayer() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)) {
+            return null;
+        }
+
+        return PlayerRenderProperties.builder()
+                .player(player)
+                .renderColor(config.highlightOwnPlayerColor())
+                .renderNameLocation(config.ownPlayerPlayerNameLocation())
+                .renderOutline(config.ownPlayerPlayerOutline())
+                .renderMinimap(config.ownPlayerPlayerMinimapAnimation())
+                .renderTile(config.ownPlayerPlayerTile())
+                .renderHull(config.ownPlayerPlayerHull())
+                .priority(this.getPriority())
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.friendsChatRank())
+                .build();
     }
 }

@@ -17,6 +17,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -24,6 +25,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
 import java.awt.*;
+import java.util.Objects;
 
 @Slf4j
 @PluginDescriptor(
@@ -54,6 +56,7 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
     @Inject private AttackableHighlighter attackableHighlighter;
     @Inject private TaggedPlayerHighlighter  taggedPlayerHighlighter;
     @Inject private IgnoreHighlighter ignoreHighlighter;
+    @Inject private OthersHighlighter othersHighlighter;
 
     @Override
     protected void startUp()
@@ -68,6 +71,7 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
         renderDecisionService.registerHighlighter(attackableHighlighter);
         renderDecisionService.registerHighlighter(taggedPlayerHighlighter);
         renderDecisionService.registerHighlighter(ignoreHighlighter);
+        renderDecisionService.registerHighlighter(othersHighlighter);
 
         eventBus.register(taggedPlayerHighlighter);
 
@@ -92,15 +96,11 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
         return configManager.getConfig(PlayerIndicatorExtendedConfig.class);
     }
 
-    private void handleTagClick(String name, boolean alreadyTagged)
-    {
-        if (alreadyTagged)
-            taggedPlayerHighlighter.untagPlayer(name);
-        else
-            taggedPlayerHighlighter.tagPlayer(name);
-
-
-        updateTaggedConfig();
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event){
+        if(Objects.equals(event.getGroup(), "playerindicatorextended")){
+            renderDecisionService.resortHighlighters();
+        }
     }
 
     @Subscribe

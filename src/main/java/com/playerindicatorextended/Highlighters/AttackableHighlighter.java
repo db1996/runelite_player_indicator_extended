@@ -30,6 +30,15 @@ public class AttackableHighlighter extends BaseHighlighter
         this.config = config;
     }
 
+    @Override
+    public HighlighterType getHighlighterType() {
+        return HighlighterType.ATTACKABLE;
+    }
+
+    @Override
+    public int getPriority() {
+        return this.getHighlighterType().getPriority();
+    }
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
@@ -64,7 +73,7 @@ public class AttackableHighlighter extends BaseHighlighter
                         .renderMinimap(config.attackablePlayerMinimapAnimation())
                         .renderTile(config.attackablePlayerTile())
                         .renderHull(config.attackablePlayerHull())
-                        .priority(HighlighterType.FRIENDS_CHAT.getPriority())
+                        .priority(this.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();
@@ -74,6 +83,36 @@ public class AttackableHighlighter extends BaseHighlighter
 
         return result;
     }
+
+    @Override
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
+    {
+        if (!config.highlightAttackable()) {
+            return null;
+        }
+
+        if (player == null || player.getName() == null || player.equals(localPlayer)) {
+            return null;
+        }
+
+        if (!canAttack(localPlayer, player)) {
+            return null;
+        }
+
+        return PlayerRenderProperties.builder()
+                .player(player)
+                .renderColor(config.highlightAttackableColor())
+                .renderNameLocation(config.attackablePlayerNameLocation())
+                .renderOutline(config.attackablePlayerOutline())
+                .renderMinimap(config.attackablePlayerMinimapAnimation())
+                .renderTile(config.attackablePlayerTile())
+                .renderHull(config.attackablePlayerHull())
+                .priority(this.getPriority())
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.friendsChatRank())
+                .build();
+    }
+
 
     public boolean canAttack(Player player1, Player player2) {
         if (player1 == null || player2 == null || player1.equals(player2)) {

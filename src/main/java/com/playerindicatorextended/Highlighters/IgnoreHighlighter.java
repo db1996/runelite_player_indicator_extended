@@ -33,6 +33,15 @@ public class IgnoreHighlighter extends BaseHighlighter
         this.playerRenderPropertiesService = playerRenderPropertiesService;
     }
 
+    @Override
+    public HighlighterType getHighlighterType() {
+        return HighlighterType.IGNORED;
+    }
+
+    @Override
+    public int getPriority() {
+        return this.getHighlighterType().getPriority();
+    }
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
@@ -71,7 +80,7 @@ public class IgnoreHighlighter extends BaseHighlighter
                         .renderMinimap(config.ignoredPlayerMinimapAnimation())
                         .renderTile(config.ignoredPlayerTile())
                         .renderHull(config.ignoredPlayerHull())
-                        .priority(HighlighterType.TEAM_MEMBERS.getPriority())
+                        .priority(this.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();
@@ -81,6 +90,40 @@ public class IgnoreHighlighter extends BaseHighlighter
 
         return result;
     }
+
+    @Override
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
+    {
+        if (config.highlightIgnore() == HighlightSetting.DISABLED) {
+            return null;
+        }
+
+        if (config.highlightIgnore() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)) {
+            return null;
+        }
+
+        if (player == null || player.getName() == null || player.equals(localPlayer)) {
+            return null;
+        }
+
+        if (!isIgnored(player)) {
+            return null;
+        }
+
+        return PlayerRenderProperties.builder()
+                .player(player)
+                .renderColor(config.highlightIgnoreColor())
+                .renderNameLocation(config.ignoredPlayerNameLocation())
+                .renderOutline(config.ignoredPlayerOutline())
+                .renderMinimap(config.ignoredPlayerMinimapAnimation())
+                .renderTile(config.ignoredPlayerTile())
+                .renderHull(config.ignoredPlayerHull())
+                .priority(this.getPriority())
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.friendsChatRank())
+                .build();
+    }
+
 
     private boolean isIgnored(Player player)
     {

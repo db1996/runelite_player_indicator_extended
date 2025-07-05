@@ -32,6 +32,15 @@ public class TeamHighlighter extends BaseHighlighter
         this.playerRenderPropertiesService = playerRenderPropertiesService;
     }
 
+    @Override
+    public HighlighterType getHighlighterType() {
+        return HighlighterType.TEAM_MEMBERS;
+    }
+
+    @Override
+    public int getPriority() {
+        return this.getHighlighterType().getPriority();
+    }
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
@@ -70,7 +79,7 @@ public class TeamHighlighter extends BaseHighlighter
                         .renderMinimap(config.teamPlayerMinimapAnimation())
                         .renderTile(config.teamPlayerTile())
                         .renderHull(config.teamPlayerHull())
-                        .priority(HighlighterType.TEAM_MEMBERS.getPriority())
+                        .priority(this.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();
@@ -80,4 +89,33 @@ public class TeamHighlighter extends BaseHighlighter
 
         return result;
     }
+
+    @Override
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
+    {
+        if (player == null || player.getName() == null) {
+            return null;
+        }
+
+        int playerTeam = player.getTeam();
+        int localTeam = localPlayer.getTeam();
+
+        if (playerTeam <= 0 || playerTeam != localTeam) {
+            return null;
+        }
+
+        return PlayerRenderProperties.builder()
+                .player(player)
+                .renderColor(config.highlightTeamColor())
+                .renderNameLocation(config.teamPlayerNameLocation())
+                .renderOutline(config.teamPlayerOutline())
+                .renderMinimap(config.teamPlayerMinimapAnimation())
+                .renderTile(config.teamPlayerTile())
+                .renderHull(config.teamPlayerHull())
+                .priority(this.getPriority())
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.friendsChatRank())
+                .build();
+    }
+
 }

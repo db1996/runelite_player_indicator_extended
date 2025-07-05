@@ -30,6 +30,15 @@ public class FriendsHighlighter extends BaseHighlighter
         this.playerRenderPropertiesService = playerRenderPropertiesService;
     }
 
+    @Override
+    public HighlighterType getHighlighterType() {
+        return HighlighterType.FRIENDS;
+    }
+
+    @Override
+    public int getPriority() {
+        return this.getHighlighterType().getPriority();
+    }
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
@@ -69,7 +78,7 @@ public class FriendsHighlighter extends BaseHighlighter
                         .renderMinimap(config.friendsPlayerMinimapAnimation())
                         .renderTile(config.friendsPlayerTile())
                         .renderHull(config.friendsPlayerHull())
-                        .priority(HighlighterType.FRIENDS.getPriority())
+                        .priority(this.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();
@@ -80,4 +89,38 @@ public class FriendsHighlighter extends BaseHighlighter
 
         return result;
     }
+
+    @Override
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
+    {
+        if (config.highlightFriends() == HighlightSetting.DISABLED) {
+            return null;
+        }
+
+        if (config.highlightFriends() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)) {
+            return null;
+        }
+
+        if (player == null || player.getName() == null || Objects.equals(player.getName(), localPlayer.getName())) {
+            return null;
+        }
+
+        if (!player.isFriend()) {
+            return null;
+        }
+
+        return PlayerRenderProperties.builder()
+                .player(player)
+                .renderColor(config.highlightFriendsColor())
+                .renderNameLocation(config.friendsPlayerNameLocation())
+                .renderOutline(config.friendsPlayerOutline())
+                .renderMinimap(config.friendsPlayerMinimapAnimation())
+                .renderTile(config.friendsPlayerTile())
+                .renderHull(config.friendsPlayerHull())
+                .priority(this.getPriority())
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.friendsChatRank())
+                .build();
+    }
+
 }

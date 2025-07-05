@@ -39,6 +39,16 @@ public class TaggedPlayerHighlighter extends BaseHighlighter
         this.taggedNames = new HashSet<>();
     }
 
+    @Override
+    public HighlighterType getHighlighterType() {
+        return HighlighterType.TAGGED;
+    }
+
+    @Override
+    public int getPriority() {
+        return this.getHighlighterType().getPriority();
+    }
+
     @Subscribe
     public void onConfigChanged(ConfigChanged e)
     {
@@ -98,7 +108,7 @@ public class TaggedPlayerHighlighter extends BaseHighlighter
                         .renderMinimap(config.taggedPlayerMinimapAnimation())
                         .renderTile(config.taggedPlayerTile())
                         .renderHull(config.taggedPlayerHull())
-                        .priority(HighlighterType.TAGGED.getPriority())
+                        .priority(this.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();
@@ -109,6 +119,34 @@ public class TaggedPlayerHighlighter extends BaseHighlighter
 
         return result;
     }
+
+    @Override
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
+    {
+        if (player == null || player.getName() == null) {
+            return null;
+        }
+
+        String playerName = player.getName().toLowerCase();
+
+        if (!taggedNames.contains(playerName)) {
+            return null;
+        }
+
+        return PlayerRenderProperties.builder()
+                .player(player)
+                .renderColor(config.highlightTaggedColor())
+                .renderNameLocation(config.taggedPlayerNameLocation())
+                .renderOutline(config.taggedPlayerOutline())
+                .renderMinimap(config.taggedPlayerMinimapAnimation())
+                .renderTile(config.taggedPlayerTile())
+                .renderHull(config.taggedPlayerHull())
+                .priority(this.getPriority())
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.friendsChatRank())
+                .build();
+    }
+
 
     public void tagPlayer(String name)
     {

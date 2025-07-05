@@ -292,29 +292,29 @@ public interface PlayerIndicatorExtendedConfig extends Config
         return new Color(170,0,255);
     }
 
-//    @ConfigItem(
-//            keyName="highlightOthers",
-//            name="Other players",
-//            description="Highlight tagged players",
-//            section= highlightsSection,
-//            position=18
-//    )
-//    default HighlightSetting highlightOthers()
-//    {
-//        return HighlightSetting.DISABLED;
-//    }
-//
-//    @ConfigItem(
-//            keyName="highlightOthersColor",
-//            name="Color",
-//            description="Ignored Others highlight color",
-//            section= highlightsSection,
-//            position=19
-//    )
-//    default Color highlightOthersColor()
-//    {
-//        return new Color(0,0,0);
-//    }
+    @ConfigItem(
+            keyName="highlightOthers",
+            name="Other players",
+            description="Highlight tagged players",
+            section= highlightsSection,
+            position=18
+    )
+    default HighlightSetting highlightOthers()
+    {
+        return HighlightSetting.DISABLED;
+    }
+
+    @ConfigItem(
+            keyName="highlightOthersColor",
+            name="Color",
+            description="Ignored Others highlight color",
+            section= highlightsSection,
+            position=19
+    )
+    default Color highlightOthersColor()
+    {
+        return new Color(0,0,0);
+    }
 
     // ----------------------------------------------------
     // 2) Own Player settings
@@ -943,73 +943,73 @@ public interface PlayerIndicatorExtendedConfig extends Config
     // 11) Others settings
     // ----------------------------------------------------
 
-//    @ConfigSection(
-//            name = "Others settings",
-//            description = "Other/unmatched players",
-//            position = 11,
-//            closedByDefault = true
-//    )
-//    String othersSection = "othersSection";
-//
-//    @ConfigItem(
-//            keyName = "othersPlayerTile",
-//            name = "Tile",
-//            description = "Highlight unmatched player's tile?",
-//            section = othersSection,
-//            position = 0
-//    )
-//    default boolean othersPlayerTile()
-//    {
-//        return defaultTile;
-//    }
-//
-//    @ConfigItem(
-//            keyName = "othersPlayerOutline",
-//            name = "Outline",
-//            description = "Highlight unmatched player's outline?",
-//            section = othersSection,
-//            position = 1
-//    )
-//    default boolean othersPlayerOutline()
-//    {
-//        return defaultOutline;
-//    }
-//
-//    @ConfigItem(
-//            keyName = "othersPlayerHull",
-//            name = "Hull",
-//            description = "Highlight unmatched player's hull ring?",
-//            section = othersSection,
-//            position = 2
-//    )
-//    default boolean othersPlayerHull()
-//    {
-//        return defaultHull;
-//    }
-//
-//    @ConfigItem(
-//            keyName = "othersPlayerMinimapAnimation",
-//            name = "Minimap",
-//            description = "Minimap highlight (None=off)",
-//            section = othersSection,
-//            position = 3
-//    )
-//    default MinimapAnimation othersPlayerMinimapAnimation()
-//    {
-//        return defaultMinimapanimation;
-//    }
-//
-//    @ConfigItem(
-//            keyName = "othersPlayerNameLocation",
-//            name = "Name Location",
-//            description = "Where to display unmatched player's name?",
-//            section = othersSection,
-//            position = 4
-//    )
-//    default NameLocation othersPlayerNameLocation()
-//    {
-//        return defaultNamelocation;
-//    }
+    @ConfigSection(
+            name = "Others settings",
+            description = "Other/unmatched players",
+            position = 11,
+            closedByDefault = true
+    )
+    String othersSection = "othersSection";
+
+    @ConfigItem(
+            keyName = "othersPlayerTile",
+            name = "Tile",
+            description = "Highlight unmatched player's tile?",
+            section = othersSection,
+            position = 0
+    )
+    default boolean othersPlayerTile()
+    {
+        return defaultTile;
+    }
+
+    @ConfigItem(
+            keyName = "othersPlayerOutline",
+            name = "Outline",
+            description = "Highlight unmatched player's outline?",
+            section = othersSection,
+            position = 1
+    )
+    default boolean othersPlayerOutline()
+    {
+        return defaultOutline;
+    }
+
+    @ConfigItem(
+            keyName = "othersPlayerHull",
+            name = "Hull",
+            description = "Highlight unmatched player's hull ring?",
+            section = othersSection,
+            position = 2
+    )
+    default boolean othersPlayerHull()
+    {
+        return defaultHull;
+    }
+
+    @ConfigItem(
+            keyName = "othersPlayerMinimapAnimation",
+            name = "Minimap",
+            description = "Minimap highlight (None=off)",
+            section = othersSection,
+            position = 3
+    )
+    default MinimapAnimation othersPlayerMinimapAnimation()
+    {
+        return defaultMinimapanimation;
+    }
+
+    @ConfigItem(
+            keyName = "othersPlayerNameLocation",
+            name = "Name Location",
+            description = "Where to display unmatched player's name?",
+            section = othersSection,
+            position = 4
+    )
+    default NameLocation othersPlayerNameLocation()
+    {
+        return defaultNamelocation;
+    }
 
     // ----------------------------------------------------
     // 2) Thickness & sizes

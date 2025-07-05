@@ -9,24 +9,24 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.WorldView;
-import net.runelite.client.party.PartyService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Singleton
 @Slf4j
-public class FriendsChatHighlighter extends BaseHighlighter
+public class OthersHighlighter extends BaseHighlighter
 {
     private final Client client;
     private final PlayerIndicatorExtendedConfig config;
     private final PlayerRenderPropertiesService playerRenderPropertiesService;
 
     @Inject
-    public FriendsChatHighlighter(Client client, PlayerIndicatorExtendedConfig config, PlayerRenderPropertiesService playerRenderPropertiesService)
+    public OthersHighlighter(Client client, PlayerIndicatorExtendedConfig config, PlayerRenderPropertiesService playerRenderPropertiesService)
     {
         this.client = client;
         this.config = config;
@@ -35,7 +35,7 @@ public class FriendsChatHighlighter extends BaseHighlighter
 
     @Override
     public HighlighterType getHighlighterType() {
-        return HighlighterType.FRIENDS_CHAT;
+        return HighlighterType.OTHER;
     }
 
     @Override
@@ -46,16 +46,17 @@ public class FriendsChatHighlighter extends BaseHighlighter
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
-        if(config.highlightFriendsChat() == HighlightSetting.DISABLED){
+        if(config.highlightOthers() == HighlightSetting.DISABLED){
             return Collections.emptyList();
         }
 
-        if(config.highlightFriendsChat() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
+        if(config.highlightOthers() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)){
             return Collections.emptyList();
         }
 
         Player localPlayer = client.getLocalPlayer();
         if(localPlayer == null){
+            log.info("Player not found");
             return Collections.emptyList();
         }
 
@@ -66,26 +67,25 @@ public class FriendsChatHighlighter extends BaseHighlighter
 
         List<PlayerRenderProperties> result = new ArrayList<>();
         for (Player player : worldView.players()) {
-            if (player == null || player.getName() == null || player.equals(localPlayer))
+            if (player == null || player.getName() == null || Objects.equals(player.getName(), localPlayer.getName()))
             {
                 continue;
             }
 
-            if (player.isFriendsChatMember()){
-                PlayerRenderProperties decision = PlayerRenderProperties.builder()
-                        .player(player)
-                        .renderColor(config.highlightFriendsChatColor())
-                        .renderNameLocation(config.friendsChatPlayerNameLocation())
-                        .renderOutline(config.friendsChatPlayerOutline())
-                        .renderMinimap(config.friendsChatPlayerMinimapAnimation())
-                        .renderTile(config.friendsChatPlayerTile())
-                        .renderHull(config.friendsChatPlayerHull())
-                        .priority(this.getPriority())
-                        .renderClanChatRank(config.clanChatRank())
-                        .renderFriendsChatRank(config.friendsChatRank())
-                        .build();
-                result.add(decision);
-            }
+            PlayerRenderProperties decision = PlayerRenderProperties.builder()
+                    .player(player)
+                    .renderColor(config.highlightOthersColor())
+                    .renderNameLocation(config.othersPlayerNameLocation())
+                    .renderOutline(config.othersPlayerOutline())
+                    .renderMinimap(config.othersPlayerMinimapAnimation())
+                    .renderTile(config.othersPlayerTile())
+                    .renderHull(config.othersPlayerHull())
+                    .priority(this.getPriority())
+                    .renderClanChatRank(config.clanChatRank())
+                    .renderFriendsChatRank(config.friendsChatRank())
+                    .build();
+            result.add(decision);
+
         }
 
         return result;
@@ -94,30 +94,26 @@ public class FriendsChatHighlighter extends BaseHighlighter
     @Override
     public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
     {
-        if (config.highlightFriendsChat() == HighlightSetting.DISABLED) {
+        if (config.highlightOthers() == HighlightSetting.DISABLED) {
             return null;
         }
 
-        if (config.highlightFriendsChat() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)) {
+        if (config.highlightOthers() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)) {
             return null;
         }
 
-        if (player == null || player.getName() == null || player.equals(localPlayer)) {
-            return null;
-        }
-
-        if (!player.isFriendsChatMember()) {
+        if (player == null || player.getName() == null || Objects.equals(player.getName(), localPlayer.getName())) {
             return null;
         }
 
         return PlayerRenderProperties.builder()
                 .player(player)
-                .renderColor(config.highlightFriendsChatColor())
-                .renderNameLocation(config.friendsChatPlayerNameLocation())
-                .renderOutline(config.friendsChatPlayerOutline())
-                .renderMinimap(config.friendsChatPlayerMinimapAnimation())
-                .renderTile(config.friendsChatPlayerTile())
-                .renderHull(config.friendsChatPlayerHull())
+                .renderColor(config.highlightOthersColor())
+                .renderNameLocation(config.othersPlayerNameLocation())
+                .renderOutline(config.othersPlayerOutline())
+                .renderMinimap(config.othersPlayerMinimapAnimation())
+                .renderTile(config.othersPlayerTile())
+                .renderHull(config.othersPlayerHull())
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())

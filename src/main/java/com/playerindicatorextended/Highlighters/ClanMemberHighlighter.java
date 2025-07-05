@@ -34,6 +34,16 @@ public class ClanMemberHighlighter extends BaseHighlighter
 
 
     @Override
+    public HighlighterType getHighlighterType() {
+        return HighlighterType.CLAN_MEMBERS;
+    }
+
+    @Override
+    public int getPriority() {
+        return this.getHighlighterType().getPriority();
+    }
+
+    @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
         if(config.highlightClan() == HighlightSetting.DISABLED){
@@ -69,7 +79,7 @@ public class ClanMemberHighlighter extends BaseHighlighter
                         .renderMinimap(config.clanPlayerMinimapAnimation())
                         .renderTile(config.clanPlayerTile())
                         .renderHull(config.clanPlayerHull())
-                        .priority(HighlighterType.CLAN_MEMBERS.getPriority())
+                        .priority(this.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.clanChatRank())
                         .build();
@@ -79,5 +89,38 @@ public class ClanMemberHighlighter extends BaseHighlighter
         }
 
         return result;
+    }
+
+    @Override
+    public PlayerRenderProperties getRenderProperties(Player player, Player localPlayer)
+    {
+        if (config.highlightClan() == HighlightSetting.DISABLED) {
+            return null;
+        }
+
+        if (config.highlightClan() == HighlightSetting.PVP && !playerRenderPropertiesService.isPvp(client)) {
+            return null;
+        }
+
+        if (player == null || player.getName() == null || player.equals(localPlayer)) {
+            return null;
+        }
+
+        if (!player.isClanMember()) {
+            return null;
+        }
+
+        return PlayerRenderProperties.builder()
+                .player(player)
+                .renderColor(config.highlightClanColor())
+                .renderNameLocation(config.clanPlayerNameLocation())
+                .renderOutline(config.clanPlayerOutline())
+                .renderMinimap(config.clanPlayerMinimapAnimation())
+                .renderTile(config.clanPlayerTile())
+                .renderHull(config.clanPlayerHull())
+                .priority(this.getPriority())
+                .renderClanChatRank(config.clanChatRank())
+                .renderFriendsChatRank(config.clanChatRank())
+                .build();
     }
 }
