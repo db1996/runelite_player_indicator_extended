@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.WorldView;
+import net.runelite.client.party.PartyService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,23 +17,25 @@ import java.util.List;
 
 @Singleton
 @Slf4j
-public class TeamHighlighter extends BaseHighlighter
+public class PartyHighlighter extends BaseHighlighter
 {
     private final Client client;
     private final PlayerIndicatorExtendedConfig config;
+    private final PartyService partyService;
 
     @Inject
-    public TeamHighlighter(Client client, PlayerIndicatorExtendedConfig config)
+    public PartyHighlighter(Client client, PlayerIndicatorExtendedConfig config, PartyService partyService)
     {
         this.client = client;
         this.config = config;
+        this.partyService = partyService;
     }
 
 
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
-        if(!config.highlightTeam()){
+        if(!config.highlightParty()){
             return Collections.emptyList();
         }
 
@@ -48,16 +51,16 @@ public class TeamHighlighter extends BaseHighlighter
                 return null;
             }
 
-            if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam()){
+            if (partyService.isInParty() && partyService.getMemberByDisplayName(player.getName()) != null){
                 PlayerRenderProperties decision = PlayerRenderProperties.builder()
                         .player(player)
-                        .renderColor(config.highlightTeamColor())
-                        .renderNameLocation(config.teamPlayerNameLocation())
-                        .renderOutline(config.teamPlayerOutline())
-                        .renderMinimap(config.teamPlayerMinimapAnimation())
-                        .renderTile(config.teamPlayerTile())
-                        .renderHull(config.teamPlayerHull())
-                        .priority(HighlighterType.TEAM_MEMBERS.getPriority())
+                        .renderColor(config.highlightPartyColor())
+                        .renderNameLocation(config.partyPlayerNameLocation())
+                        .renderOutline(config.partyPlayerOutline())
+                        .renderMinimap(config.partyPlayerMinimapAnimation())
+                        .renderTile(config.partyPlayerTile())
+                        .renderHull(config.partyPlayerHull())
+                        .priority(HighlighterType.PARTY.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();

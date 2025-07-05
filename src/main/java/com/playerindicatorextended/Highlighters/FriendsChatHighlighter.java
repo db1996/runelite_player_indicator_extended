@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.WorldView;
+import net.runelite.client.party.PartyService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,13 +17,13 @@ import java.util.List;
 
 @Singleton
 @Slf4j
-public class TeamHighlighter extends BaseHighlighter
+public class FriendsChatHighlighter extends BaseHighlighter
 {
     private final Client client;
     private final PlayerIndicatorExtendedConfig config;
 
     @Inject
-    public TeamHighlighter(Client client, PlayerIndicatorExtendedConfig config)
+    public FriendsChatHighlighter(Client client, PlayerIndicatorExtendedConfig config)
     {
         this.client = client;
         this.config = config;
@@ -32,7 +33,7 @@ public class TeamHighlighter extends BaseHighlighter
     @Override
     public List<PlayerRenderProperties> getRenderDecisions()
     {
-        if(!config.highlightTeam()){
+        if(!config.highlightFriendsChat()){
             return Collections.emptyList();
         }
 
@@ -48,16 +49,16 @@ public class TeamHighlighter extends BaseHighlighter
                 return null;
             }
 
-            if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam()){
+            if (player.isFriendsChatMember()){
                 PlayerRenderProperties decision = PlayerRenderProperties.builder()
                         .player(player)
-                        .renderColor(config.highlightTeamColor())
-                        .renderNameLocation(config.teamPlayerNameLocation())
-                        .renderOutline(config.teamPlayerOutline())
-                        .renderMinimap(config.teamPlayerMinimapAnimation())
-                        .renderTile(config.teamPlayerTile())
-                        .renderHull(config.teamPlayerHull())
-                        .priority(HighlighterType.TEAM_MEMBERS.getPriority())
+                        .renderColor(config.highlightFriendsChatColor())
+                        .renderNameLocation(config.friendsChatPlayerNameLocation())
+                        .renderOutline(config.friendsChatPlayerOutline())
+                        .renderMinimap(config.friendsChatPlayerMinimapAnimation())
+                        .renderTile(config.friendsChatPlayerTile())
+                        .renderHull(config.friendsChatPlayerHull())
+                        .priority(HighlighterType.FRIENDS_CHAT.getPriority())
                         .renderClanChatRank(config.clanChatRank())
                         .renderFriendsChatRank(config.friendsChatRank())
                         .build();
