@@ -26,6 +26,7 @@ Each category can be further customized, you can customize the following setting
 - `hull` - clickable area of the player
 - `minimap` - can be turned off, default is static which is just a regular dot. You can also set various animations
 - `Name location` - Same as the original plugin
+- `Show combat level` - Shows combat level next to their name (like when right-clicking)
 
 ![category-settings.png](docs/category-settings.png)
 

@@ -66,6 +66,7 @@ public class AttackableHighlighter extends BaseHighlighter
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())
+                .renderCombatLevel(config.attackablePlayerCombatLevel())
                 .build();
     }
 

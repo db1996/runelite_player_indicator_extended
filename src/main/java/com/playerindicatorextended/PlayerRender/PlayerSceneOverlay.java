@@ -74,7 +74,7 @@ public class PlayerSceneOverlay extends Overlay
 
 
             if (decision.getRenderNameLocation() != NameLocation.DISABLED)
-                renderHelper.drawName(g, player, player.getName(), decision.getRenderNameLocation(), color, rankImage);
+                renderHelper.drawName(g, player, player.getName(), decision.getRenderNameLocation(), color, rankImage, decision.isRenderCombatLevel());
         }
 
         return null;

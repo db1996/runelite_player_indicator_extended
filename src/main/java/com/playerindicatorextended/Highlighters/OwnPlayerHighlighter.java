@@ -59,14 +59,15 @@ public class OwnPlayerHighlighter extends BaseHighlighter
         return PlayerRenderProperties.builder()
                 .player(player)
                 .renderColor(config.highlightOwnPlayerColor())
-                .renderNameLocation(config.ownPlayerPlayerNameLocation())
-                .renderOutline(config.ownPlayerPlayerOutline())
-                .renderMinimap(config.ownPlayerPlayerMinimapAnimation())
-                .renderTile(config.ownPlayerPlayerTile())
-                .renderHull(config.ownPlayerPlayerHull())
+                .renderNameLocation(config.ownPlayerNameLocation())
+                .renderOutline(config.ownPlayerOutline())
+                .renderMinimap(config.ownPlayerMinimapAnimation())
+                .renderTile(config.ownPlayerTile())
+                .renderHull(config.ownPlayerHull())
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())
+                .renderCombatLevel(config.ownPlayerCombatLevel())
                 .build();
     }
 }

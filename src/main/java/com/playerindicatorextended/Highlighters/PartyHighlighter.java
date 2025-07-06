@@ -79,6 +79,7 @@ public class PartyHighlighter extends BaseHighlighter
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())
+                .renderCombatLevel(config.partyPlayerCombatLevel())
                 .build();
     }
 

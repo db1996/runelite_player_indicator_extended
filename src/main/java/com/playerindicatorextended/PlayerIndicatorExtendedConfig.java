@@ -14,6 +14,7 @@ public interface PlayerIndicatorExtendedConfig extends Config
     boolean defaultTile = false;
     boolean defaultOutline = false;
     boolean defaultHull = false;
+    boolean defaultCombatLevel = false;
     NameLocation defaultNamelocation = NameLocation.ABOVE_HEAD;
     MinimapAnimation defaultMinimapanimation = MinimapAnimation.STATIC;
 
@@ -353,63 +354,75 @@ public interface PlayerIndicatorExtendedConfig extends Config
     String ownPlayerSection = "ownPlayerSection";
 
     @ConfigItem(
-            keyName="ownPlayerPlayerTile",
+            keyName="ownPlayerTile",
             name="Tile",
             description="Highlight ownPlayer player's tile?",
             section= ownPlayerSection,
             position=0
     )
-    default boolean ownPlayerPlayerTile()
+    default boolean ownPlayerTile()
     {
         return defaultTile;
     }
 
     @ConfigItem(
-            keyName="ownPlayerPlayerOutline",
+            keyName="ownPlayerOutline",
             name="Outline",
             description="Highlight ownPlayer player's outline?",
             section= ownPlayerSection,
             position=1
     )
-    default boolean ownPlayerPlayerOutline()
+    default boolean ownPlayerOutline()
     {
         return defaultOutline;
     }
 
     @ConfigItem(
-            keyName="ownPlayerPlayerHull",
+            keyName="ownPlayerHull",
             name="Hull",
             description="Highlight ownPlayer player's hull ring?",
             section= ownPlayerSection,
             position=2
     )
-    default boolean ownPlayerPlayerHull()
+    default boolean ownPlayerHull()
     {
         return defaultHull;
     }
 
     @ConfigItem(
-            keyName="ownPlayerPlayerMinimapAnimation",
+            keyName="ownPlayerMinimapAnimation",
             name="Minimap",
             description="Minimap highlight (None=off)",
             section= ownPlayerSection,
             position=3
     )
-    default MinimapAnimation ownPlayerPlayerMinimapAnimation()
+    default MinimapAnimation ownPlayerMinimapAnimation()
     {
         return defaultMinimapanimation;
     }
 
     @ConfigItem(
-            keyName="ownPlayerPlayerNameLocation",
+            keyName="ownPlayerNameLocation",
             name="Name Location",
             description="Where to display ownPlayer player's name?",
             section= ownPlayerSection,
             position=4
     )
-    default NameLocation ownPlayerPlayerNameLocation()
+    default NameLocation ownPlayerNameLocation()
     {
         return defaultNamelocation;
+    }
+
+    @ConfigItem(
+            keyName = "ownPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = ownPlayerSection,
+            position = 5
+    )
+    default boolean ownPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
     }
 
     // ----------------------------------------------------
@@ -479,6 +492,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
         return defaultNamelocation;
     }
 
+    @ConfigItem(
+            keyName = "partyPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = partySection,
+            position = 5
+    )
+    default boolean partyPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
+    }
+
 
     // ----------------------------------------------------
     // 4) Friends settings
@@ -537,6 +562,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation friendsPlayerNameLocation() { return defaultNamelocation; }
 
+    @ConfigItem(
+            keyName = "friendsPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = friendsSection,
+            position = 5
+    )
+    default boolean friendsPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
+    }
+
     // ----------------------------------------------------
     // 5) Friends Chat settings
     // ----------------------------------------------------
@@ -594,6 +631,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
     )
     default NameLocation friendsChatPlayerNameLocation() { return defaultNamelocation; }
 
+    @ConfigItem(
+            keyName = "friendsChatPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = friendsChatSection,
+            position = 5
+    )
+    default boolean friendsChatPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
+    }
+
     // ----------------------------------------------------
     // 6) Team Member settings
     // ----------------------------------------------------
@@ -650,6 +699,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
             position=4
     )
     default NameLocation teamPlayerNameLocation() { return defaultNamelocation; }
+
+    @ConfigItem(
+            keyName = "teamPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = teamSection,
+            position = 5
+    )
+    default boolean teamPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
+    }
 
     // ----------------------------------------------------
     // 7) Clan settings
@@ -721,6 +782,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
     default NameLocation clanPlayerNameLocation()
     {
         return defaultNamelocation;
+    }
+
+    @ConfigItem(
+            keyName = "clanPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = clanSection,
+            position = 5
+    )
+    default boolean clanPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
     }
 
     // ----------------------------------------------------
@@ -795,6 +868,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
         return defaultNamelocation;
     }
 
+    @ConfigItem(
+            keyName = "attackablePlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = attackableSection,
+            position = 5
+    )
+    default boolean attackablePlayerCombatLevel()
+    {
+        return true;
+    }
+
     // ----------------------------------------------------
     // 9) Ignored settings
     // ----------------------------------------------------
@@ -865,6 +950,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
     default NameLocation ignoredPlayerNameLocation()
     {
         return defaultNamelocation;
+    }
+
+    @ConfigItem(
+            keyName = "ignoredPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = ignoredSection,
+            position = 5
+    )
+    default boolean ignoredPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
     }
 
     // ----------------------------------------------------
@@ -939,6 +1036,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
         return defaultNamelocation;
     }
 
+    @ConfigItem(
+            keyName = "taggedPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = taggedSection,
+            position = 5
+    )
+    default boolean taggedPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
+    }
+
     // ----------------------------------------------------
     // 11) Others settings
     // ----------------------------------------------------
@@ -1009,6 +1118,18 @@ public interface PlayerIndicatorExtendedConfig extends Config
     default NameLocation othersPlayerNameLocation()
     {
         return defaultNamelocation;
+    }
+
+    @ConfigItem(
+            keyName = "othersPlayerCombatLevel",
+            name = "Show combat level",
+            description = "Show player's combat level next to the name.",
+            section = othersSection,
+            position = 5
+    )
+    default boolean othersPlayerCombatLevel()
+    {
+        return defaultCombatLevel;
     }
 
     // ----------------------------------------------------

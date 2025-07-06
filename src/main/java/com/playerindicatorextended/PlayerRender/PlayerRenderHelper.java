@@ -70,7 +70,12 @@ public class PlayerRenderHelper {
         g.setStroke(old);
     }
 
-    protected void drawName(Graphics2D g, Player p, String nameText, NameLocation nameLoc, Color nameColor, BufferedImage icon) {
+    protected void drawName(Graphics2D g, Player p, String nameText, NameLocation nameLoc, Color nameColor, BufferedImage icon, boolean showCombatLevel) {
+        if(showCombatLevel){
+            int combatLevel = p.getCombatLevel();
+            nameText = nameText + " (level-"  +  combatLevel + ")";
+        }
+
         if (nameLoc != NameLocation.DISABLED)
             drawText(g, p, nameText, nameLoc, nameColor, icon);
     }

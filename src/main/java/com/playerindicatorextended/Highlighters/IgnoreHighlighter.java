@@ -73,6 +73,7 @@ public class IgnoreHighlighter extends BaseHighlighter
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())
+                .renderCombatLevel(config.ignoredPlayerCombatLevel())
                 .build();
     }
 

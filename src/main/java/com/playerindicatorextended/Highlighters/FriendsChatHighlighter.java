@@ -73,6 +73,7 @@ public class FriendsChatHighlighter extends BaseHighlighter
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())
+                .renderCombatLevel(config.friendsChatPlayerCombatLevel())
                 .build();
     }
 

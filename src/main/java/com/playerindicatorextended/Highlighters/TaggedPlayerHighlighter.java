@@ -100,6 +100,7 @@ public class TaggedPlayerHighlighter extends BaseHighlighter
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.friendsChatRank())
+                .renderCombatLevel(config.taggedPlayerCombatLevel())
                 .build();
     }
 

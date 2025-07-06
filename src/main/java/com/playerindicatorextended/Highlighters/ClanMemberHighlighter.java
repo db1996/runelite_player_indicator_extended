@@ -73,6 +73,7 @@ public class ClanMemberHighlighter extends BaseHighlighter
                 .priority(this.getPriority())
                 .renderClanChatRank(config.clanChatRank())
                 .renderFriendsChatRank(config.clanChatRank())
+                .renderCombatLevel(config.clanPlayerCombatLevel())
                 .build();
     }
 }

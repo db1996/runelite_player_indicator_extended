@@ -27,4 +27,5 @@ public class PlayerRenderProperties
     boolean renderTile;
     boolean renderFriendsChatRank;
     boolean renderClanChatRank;
+    boolean renderCombatLevel;
 }
