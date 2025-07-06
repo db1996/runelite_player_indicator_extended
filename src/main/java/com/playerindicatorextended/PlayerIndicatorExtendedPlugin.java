@@ -99,7 +99,9 @@ public class PlayerIndicatorExtendedPlugin extends Plugin
     @Subscribe
     public void onConfigChanged(ConfigChanged event){
         if(Objects.equals(event.getGroup(), "playerindicatorextended")){
+            log.info("PlayerIndicatorExtendedPlugin config changed");
             renderDecisionService.resortHighlighters();
+            log.info("{}", renderDecisionService.getHighlighters());
         }
     }
 

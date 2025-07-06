@@ -40,7 +40,7 @@ public class FriendsChatHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityFriendsChat();
     }
 
     @Override

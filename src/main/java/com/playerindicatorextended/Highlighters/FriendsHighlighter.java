@@ -37,7 +37,7 @@ public class FriendsHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityFriends();
     }
 
     @Override

@@ -39,7 +39,7 @@ public class TeamHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityTeam();
     }
 
     @Override

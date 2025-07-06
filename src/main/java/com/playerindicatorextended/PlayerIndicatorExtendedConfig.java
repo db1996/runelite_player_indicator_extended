@@ -1,9 +1,6 @@
 package com.playerindicatorextended;
 
-import com.playerindicatorextended.enums.HighlightSetting;
-import com.playerindicatorextended.enums.MinimapAnimation;
-import com.playerindicatorextended.enums.NameLocation;
-import com.playerindicatorextended.enums.TagMenuOption;
+import com.playerindicatorextended.enums.*;
 import net.runelite.client.config.*;
 
 import java.awt.*;
@@ -1130,6 +1127,162 @@ public interface PlayerIndicatorExtendedConfig extends Config
     default boolean othersPlayerCombatLevel()
     {
         return defaultCombatLevel;
+    }
+
+    // ----------------------------------------------------
+    // 1) Priority settings
+    // ----------------------------------------------------
+
+    @ConfigSection(
+            name="Priority settings",
+            description="Change default priorities. This changes which color is shown ",
+            position=12
+    )
+    String prioritySection = "prioritySection";
+
+    @ConfigItem(
+            keyName="priorityExplanation",
+            name="Change default priorities.",
+            description="",
+            section= prioritySection,
+            position=0
+    )
+    default void priorityExplanation(){}
+
+    @ConfigItem(
+            keyName="priorityExplanation",
+            name="If a player falls under multiple ",
+            description="",
+            section= prioritySection,
+            position=1
+    )
+    default void priorityExplanation2(){}
+
+    @ConfigItem(
+            keyName="priorityExplanation",
+            name="categories the one with the highest",
+            description="",
+            section= prioritySection,
+            position=2
+    )
+    default void priorityExplanation3(){}
+
+    @ConfigItem(
+            keyName="priorityExplanation",
+            name="priority will be chosen as the color/settings",
+            description="priority will be chosen as the color/settings",
+            section= prioritySection,
+            position=3
+    )
+    default void priorityExplanation4(){}
+    
+
+    @ConfigItem(
+            keyName="priorityOthers",
+            name="Other players",
+            description="Highlight tagged players",
+            section= prioritySection,
+            position=4
+    )
+    default int priorityOthers()
+    {
+        return HighlighterType.OTHER.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityParty",
+            name="Party members",
+            description="Highlight party members",
+            section= prioritySection,
+            position=5
+    )
+    default int priorityParty()
+    {
+        return HighlighterType.PARTY.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityFriendsChat",
+            name="Friends Chat",
+            description="Highlight players in your friends chat channel",
+            section= prioritySection,
+            position=6
+    )
+    default int priorityFriendsChat()
+    {
+        return HighlighterType.FRIENDS_CHAT.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityTeam",
+            name="Team Members",
+            description="Highlight team members",
+            section= prioritySection,
+            position=7
+    )
+    default int priorityTeam()
+    {
+        return HighlighterType.TEAM_MEMBERS.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityClan",
+            name="Clan Members",
+            description="Highlight clan members",
+            section= prioritySection,
+            position=8
+    )
+    default int priorityClan()
+    {
+        return HighlighterType.CLAN_MEMBERS.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityFriends",
+            name="Friends",
+            description="Highlights friends",
+            section= prioritySection,
+            position=9
+    )
+    default int priorityFriends()
+    {
+        return HighlighterType.FRIENDS.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityAttackable",
+            name="Attackable players",
+            description="Highlight attackable players",
+            section= prioritySection,
+            position=10
+    )
+    default int priorityAttackable()
+    {
+        return HighlighterType.ATTACKABLE.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityIgnore",
+            name="Ignored players",
+            description="Highlight ignored players",
+            section= prioritySection,
+            position=11
+    )
+    default int priorityIgnore()
+    {
+        return HighlighterType.IGNORED.getPriority();
+    }
+
+    @ConfigItem(
+            keyName="priorityTagged",
+            name="Tagged players",
+            description="Highlight tagged players",
+            section= prioritySection,
+            position=12
+    )
+    default int priorityTagged()
+    {
+        return HighlighterType.TAGGED.getPriority();
     }
 
     // ----------------------------------------------------

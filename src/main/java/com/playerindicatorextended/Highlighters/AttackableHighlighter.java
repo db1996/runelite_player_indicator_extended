@@ -7,14 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.WorldType;
-import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Singleton
 @Slf4j
@@ -37,7 +33,7 @@ public class AttackableHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityAttackable();
     }
 
     @Override

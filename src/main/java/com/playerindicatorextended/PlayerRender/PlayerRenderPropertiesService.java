@@ -1,6 +1,7 @@
 package com.playerindicatorextended.PlayerRender;
 
 import com.playerindicatorextended.Highlighters.BaseHighlighter;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
@@ -15,6 +16,7 @@ import java.util.*;
 @Singleton
 public class PlayerRenderPropertiesService
 {
+    @Getter
     private final List<BaseHighlighter> highlighters = new ArrayList<>();
     private final Client client;
 

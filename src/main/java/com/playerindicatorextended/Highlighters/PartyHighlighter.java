@@ -42,7 +42,7 @@ public class PartyHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityParty();
     }
 
     @Override

@@ -40,7 +40,7 @@ public class IgnoreHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityIgnore();
     }
 
     @Override

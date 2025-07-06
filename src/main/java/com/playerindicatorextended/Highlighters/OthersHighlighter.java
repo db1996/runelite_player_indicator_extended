@@ -40,7 +40,7 @@ public class OthersHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityOthers();
     }
 
 

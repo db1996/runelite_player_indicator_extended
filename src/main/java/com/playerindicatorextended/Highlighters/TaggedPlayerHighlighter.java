@@ -46,7 +46,7 @@ public class TaggedPlayerHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityTagged();
     }
 
     @Subscribe

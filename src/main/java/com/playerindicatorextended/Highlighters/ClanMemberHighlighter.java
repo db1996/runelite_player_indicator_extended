@@ -40,7 +40,7 @@ public class ClanMemberHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return config.priorityClan();
     }
 
     @Override

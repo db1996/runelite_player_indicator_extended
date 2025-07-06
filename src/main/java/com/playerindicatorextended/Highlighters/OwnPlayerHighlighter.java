@@ -34,7 +34,7 @@ public class OwnPlayerHighlighter extends BaseHighlighter
 
     @Override
     public int getPriority() {
-        return this.getHighlighterType().getPriority();
+        return 9999;
     }
 
     @Override
